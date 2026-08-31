@@ -45,9 +45,8 @@ inventory = {
         "chatgpt_pro20": {"name": "ChatGPT Pro ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 5)},
         "grok": {"name": "Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(5, 10), "sold": random.randint(8, 22)},
         "deepseek": {"name": "DeepSeek Pro 1 Month", "price": 12.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "cloud_max_5x": {"name": "Cloud Max ×5", "price": 15.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "cloud_max_20x": {"name": "Cloud Max ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)},
-        "claude_pro": {"name": "Claude Pro 1 Month", "price": 20.00, "stock": random.randint(5, 10), "sold": random.randint(10, 20)}
+        "claude_max_5x": {"name": "Claude Max ×5", "price": 15.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
+        "claude_max_20x": {"name": "Claude Max ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)}
     },
     "entertainment": {
         "spotify": {"name": "Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(5, 10), "sold": random.randint(35, 60)},
