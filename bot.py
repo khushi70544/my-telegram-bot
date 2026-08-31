@@ -6,7 +6,7 @@ from http.server import HTTPServer, BaseHTTPRequestHandler
 from telebot import TeleBot, types
 
 # Bot Token
-BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
+BOT_TOKEN = "8888661139:AAHyELdLZdJJDoYEMyM4LiDjTJt9SodxTIU"
 bot = TeleBot(BOT_TOKEN)
 
 # Admin Telegram ID
