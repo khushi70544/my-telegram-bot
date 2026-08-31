@@ -1,208 +1,244 @@
-import telebot
-from telebot import types
 
-API_TOKEN = "8888661139:AAFfUeYVLG8kwQ4tDp1TWs_a9wWmqEyVuGQ"  # Yahan apna Bot Token daalein
-ADMIN_ID = 8852375598
+import os
+import random
+import time
+import threading
+from telebot import TeleBot, types
 
-# ----------------- PAYMENT ADDRESSES -----------------
-BTC_ADDR = "bc1pj9u898umy3r7fhgrq8w6nemvepcjr0pwl89z6nn66ghqzh9wz9nqudqsla"
-USDT_ADDR = "0x43Be5B53249d33C7A77ab012c6E3508937b87d5A"
-ETH_ADDR = "0x43Be5B53249d33C7A77ab012c6E3508937b87d5A"
-SOL_ADDR = "H4cw8xf8A9pg6RTGBbAj2eobWM5HFNhxDKKroLQ1aEVq"
-TRX_ADDR = "THs69sCwiGDCDU1sWBA93tL2ct1ynQ6jyF"
+# Bot Token
+BOT_TOKEN = "8888661139:AAFfUeYVLG8kwQ4tDp1TWs_a9wWmqEyVuGQ" # Apna bot token yahan dalein
+bot = TeleBot(8888661139)
 
-bot = telebot.TeleBot(API_TOKEN)
+# Dynamic Inventory Data - Updated Prices & Plans
+inventory = {
+"chatgpt_1m": {
+"name": "ChatGPT Plus 1 Month",
+"price": 3.00,
+"stock": 5,
+"sold": 27
+},
+"chatgpt_6m": {
+"name": "ChatGPT Plus 6 Month",
+"price": 5.50,
+"stock": 5,
+"sold": 27
+},
+"spotify": {
+"name": "Spotify Premium 1 Month",
+"price": 0.50,
+"stock": 5,
+"sold": 27
+},
+"netflix": {
+"name": "Netflix Premium 1 Month",
+"price": 0.80,
+"stock": 5,
+"sold": 27
+},
+"grok": {
+"name": "Grok AI Premium 1 Month",
+"price": 4.85,
+"stock": 5,
+"sold": 27
+},
+"deepseek": {
+"name": "DeepSeek Pro 1 Month",
+"price": 12.00,
+"stock": 5,
+"sold": 27
+}
+}
+
+# User Balances & Registered Users Set
 user_data = {}
+registered_users = set()
 
-def main_menu_keyboard():
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton("🤖 AI Services", callback_data="cat_ai"),
-        types.InlineKeyboardButton("🎬 Entertainment & Apps", callback_data="cat_apps"),
-        types.InlineKeyboardButton("💬 Official Support", url="https://t.me/ZhiGeAI")
-    )
-    return markup
+def get_user(user_id, name):
+registered_users.add(user_id)
+if user_id not in user_data:
+user_data[user_id] = {"balance": 0.00, "orders": 0, "state": None, "selected_prod": None}
+return user_data[user_id]
 
-def ai_services_keyboard():
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton("🤖 ChatGPT Pro", callback_data="service_chatgpt"),
-        types.InlineKeyboardButton("✨ Gemini Advanced", callback_data="service_gemini"),
-        types.InlineKeyboardButton("🔥 Grok AI", callback_data="service_grok"),
-        types.InlineKeyboardButton("🧠 DeepSeek V4 API", callback_data="service_deepseek"),
-        types.InlineKeyboardButton("« Back to Main Menu", callback_data="main_menu")
-    )
-    return markup
+# Broadcast function to all registered users
+def broadcast_to_users(msg_text):
+for user_id in list(registered_users):
+try:
+bot.send_message(user_id, msg_text, parse_mode="Markdown")
+except Exception:
+pass
 
-def app_services_keyboard():
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton("🎵 Spotify Premium", callback_data="service_spotify"),
-        types.InlineKeyboardButton("🎬 Netflix UHD", callback_data="service_netflix"),
-        types.InlineKeyboardButton("✂️ CapCut (Out of Stock)", callback_data="service_capcut"),
-        types.InlineKeyboardButton("« Back to Main Menu", callback_data="main_menu")
-    )
-    return markup
+# Automated Inventory Manager for All Products
+def multi_product_inventory_manager():
+# PHASE 1: Initial 10-Minute Rush (Stock 5 to 0)
+time.sleep(600) # Wait 10 mins
+for key in inventory:
+if inventory[key]["stock"] > 0:
+inventory[key]["sold"] += inventory[key]["stock"]
+inventory[key]["stock"] = 0
 
-def payment_methods_keyboard():
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton("🪙 USDT (BEP20)", callback_data="pay_usdt"),
-        types.InlineKeyboardButton("⚡ TRX (TRC20)", callback_data="pay_trx"),
-        types.InlineKeyboardButton("🟣 Solana (SOL)", callback_data="pay_sol"),
-        types.InlineKeyboardButton("🔷 Ethereum (ETH)", callback_data="pay_eth"),
-        types.InlineKeyboardButton("🟠 Bitcoin (BTC)", callback_data="pay_btc"),
-        types.InlineKeyboardButton("« Back", callback_data="main_menu")
-    )
-    return markup
+# PHASE 2 & 3: Out of Stock Notification -> 30 Min Delay -> Restock Loop
+while True:
+for key, item in inventory.items():
+if item["stock"] <= 0:
+out_of_stock_msg = (
+"⚠️ **OUT OF STOCK!**\n\n"
+f"📦 **{item['name']}** is currently completely sold out!\n\n"
+f"📊 **Total Sold:** `{item['sold']}`\n"
+"⏳ *New stock will be added in exactly 30 minutes. Stay tuned!*"
+)
+broadcast_to_users(out_of_stock_msg)
 
+# Wait 30 minutes
+time.sleep(1800)
+
+# Restock strictly 40 to 50 items max
+new_stock = random.randint(40, 50)
+item["stock"] += new_stock
+
+restock_msg = (
+"📢 **NEW STOCK ADDED!**\n\n"
+f"📦 **{item['name']}** is back in stock now!\n\n"
+f"🔔 **Current Stock:** `{item['stock']}`\n"
+f"📊 **Total Sold:** `{item['sold']}`\n\n"
+"🛒 *Order now before it sells out again!* /start"
+)
+broadcast_to_users(restock_msg)
+
+# Auto-Sales Phase (Every 1-2 hours)
+time.sleep(random.randint(3600, 7200))
+for key, item in inventory.items():
+if item["stock"] > 0:
+sold_qty = random.randint(2, 5)
+actual_sold = min(item["stock"], sold_qty)
+item["stock"] -= actual_sold
+item["sold"] += actual_sold # Sold count never decreases
+
+# Main Menu Keyboard
+def main_keyboard():
+markup = types.InlineKeyboardMarkup(row_width=2)
+b1 = types.InlineKeyboardButton("🛒 Product list", callback_data="prod_list")
+b2 = types.InlineKeyboardButton("🏦 Top up balance", callback_data="topup")
+b3 = types.InlineKeyboardButton("✈️ Purchase history", callback_data="history")
+b4 = types.InlineKeyboardButton("🔑 API Key", callback_data="apikey")
+b5 = types.InlineKeyboardButton("🌐 Language", callback_data="lang")
+b6 = types.InlineKeyboardButton("👤 Referral", callback_data="referral")
+b7 = types.InlineKeyboardButton("🚨 Support", callback_data="support")
+b8 = types.InlineKeyboardButton("🗣️ Terms of Use", callback_data="terms")
+
+markup.add(b1)
+markup.add(b2, b3)
+markup.add(b4, b5)
+markup.add(b6, b7)
+markup.add(b8)
+return markup
+
+# Product List Keyboard - All Products with Updated Pricing
+def products_keyboard():
+markup = types.InlineKeyboardMarkup(row_width=1)
+
+for key, item in inventory.items():
+btn_text = f"🤖 {item['name']} | ${item['price']:.2f} | 📦 {item['stock']}"
+markup.add(types.InlineKeyboardButton(btn_text, callback_data=f"buy_{key}"))
+
+back = types.InlineKeyboardButton("⬅️ Menu", callback_data="main_menu")
+markup.add(back)
+return markup
+
+# Cancel/Menu Keyboard
+def sub_keyboard():
+markup = types.InlineKeyboardMarkup(row_width=2)
+b1 = types.InlineKeyboardButton("❌ Cancel", callback_data="prod_list")
+b2 = types.InlineKeyboardButton("⬅️ Menu", callback_data="main_menu")
+markup.add(b1, b2)
+return markup
+
+# /start Command
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    welcome_text = (
-        "💎 *WELCOME TO XIAO GPT PREMIUM STORE* 💎\n"
-        "───────────────────────────────\n"
-        f"👋 *Hello, {message.from_user.first_name}!*\n\n"
-        "⚡ *Why Choose Us?*\n"
-        "├ 🚀 Instant Delivery System\n"
-        "├ 🛡️ 100% Genuine Subscriptions\n"
-        "└ 💬 24/7 Dedicated Support\n\n"
-        "👇 *Please select a category below to continue:*"
-    )
-    bot.send_message(message.chat.id, welcome_text, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+u = get_user(message.from_user.id, message.from_user.first_name)
+caption = f"🌙 **Good evening, {message.from_user.first_name}**\n\n🤑 Balance: **${u['balance']:.2f}**\n🏪 Total orders: **{u['orders']}**"
+banner_url = "
+https://picsum.photos/800/400
+"
 
+try:
+bot.send_photo(message.chat.id, banner_url, caption=caption, parse_mode="Markdown", reply_markup=main_keyboard())
+except Exception:
+bot.send_message(message.chat.id, caption, parse_mode="Markdown", reply_markup=main_keyboard())
+
+# Callback Handlers
 @bot.callback_query_handler(func=lambda call: True)
-def callback_listener(call):
-    chat_id = call.message.chat.id
-    data = call.data
+def handle_query(call):
+u = get_user(call.from_user.id, call.from_user.first_name)
 
-    if data.startswith("approve_"):
-        target_user_id = data.split("_")[1]
-        bot.send_message(target_user_id, "🎉 *ORDER APPROVED!*\n\nYour payment has been successfully verified. Credentials will be sent shortly.", parse_mode="Markdown")
-        bot.answer_callback_query(call.id, "Approved!")
-        bot.edit_message_text(call.message.text + "\n\n✅ *STATUS: APPROVED BY ADMIN*", chat_id, call.message.message_id)
-        return
+if call.data == "main_menu":
+text = f"🌙 **Good evening, {call.from_user.first_name}**\n\n🤑 Balance: **${u['balance']:.2f}**\n🏪 Total orders: **{u['orders']}**"
+bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, parse_mode="Markdown", reply_markup=main_keyboard())
 
-    elif data.startswith("reject_"):
-        target_user_id = data.split("_")[1]
-        bot.send_message(target_user_id, "❌ *ORDER REJECTED*\n\nYour TxID could not be verified. Contact @ZhiGeAI for help.", parse_mode="Markdown")
-        bot.answer_callback_query(call.id, "Rejected!")
-        bot.edit_message_text(call.message.text + "\n\n❌ *STATUS: REJECTED BY ADMIN*", chat_id, call.message.message_id)
-        return
+elif call.data == "prod_list":
+text = f"🛒 **CATEGORIES & PRODUCTS**\n\n🤑 Balance: **${u['balance']:.2f}**\n\nChoose a product:"
+bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, parse_mode="Markdown", reply_markup=products_keyboard())
 
-    if data == "main_menu":
-        bot.edit_message_text("💎 *XIAO GPT STORE - MAIN MENU*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=main_menu_keyboard())
+elif call.data.startswith("buy_"):
+prod_key = call.data.replace("buy_", "")
+if prod_key in inventory:
+u['state'] = 'awaiting_quantity'
+u['selected_prod'] = prod_key
+item = inventory[prod_key]
 
-    elif data == "cat_ai":
-        bot.edit_message_text("🤖 *SELECT AI SERVICE:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=ai_services_keyboard())
+max_buy = min(3, item['stock']) if item['stock'] > 0 else 0
+desc = (
+f"🤖 **{item['name']}**\n"
+f"💲 Price: **${item['price']:.2f}**\n"
+f"🔔 Stock: **{item['stock']}**\n"
+f"📊 Sold: **{item['sold']}**\n"
+f"🔔 Buy: **1-{max_buy}**\n\n"
+"🗣️ **Description:**\n"
+"```\n🔒 Product delivery Method:\nMail--Pass--2FA\n"
+"🎁 Bulk Price: Direct DM to Admin\n@aitoolsandnewsbydavid\n"
+"👍 Only Login Warranty is Provided.\n```\n\n"
+f"✏️ **Enter quantity (1-{max_buy}):**" if max_buy > 0 else "\n❌ **Currently Out of Stock!**"
+)
+bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=desc, parse_mode="Markdown", reply_markup=sub_keyboard())
 
-    elif data == "cat_apps":
-        bot.edit_message_text("🎬 *SELECT ENTERTAINMENT SERVICE:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=app_services_keyboard())
+# Text Handler for Quantity Input
+@bot.message_handler(func=lambda m: True)
+def handle_text(message):
+u = get_user(message.from_user.id, message.from_user.first_name)
+if u.get('state') == 'awaiting_quantity':
+prod_key = u.get('selected_prod')
+item = inventory.get(prod_key)
 
-    elif data == "service_chatgpt":
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton("1 Month - $3.5", callback_data="plan_ChatGPT 1 Month ($3.5)"),
-            types.InlineKeyboardButton("3 Months - $6.0", callback_data="plan_ChatGPT 3 Months ($6.0)"),
-            types.InlineKeyboardButton("« Back", callback_data="cat_ai")
-        )
-        bot.edit_message_text("🤖 *ChatGPT Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+if not item or item['stock'] <= 0:
+bot.send_message(message.chat.id, "❌ Sorry, this item is out of stock right now.")
+u['state'] = None
+return
 
-    elif data == "service_gemini":
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("18 Months - $0.5", callback_data="plan_Gemini 18 Months ($0.5)"), types.InlineKeyboardButton("« Back", callback_data="cat_ai"))
-        bot.edit_message_text("✨ *Gemini Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+if message.text.isdigit():
+qty = int(message.text)
+max_buy = min(3, item['stock'])
+if 1 <= qty <= max_buy:
+u['state'] = None
+bot.send_message(message.chat.id, f"✅ Order placed for **{qty}x {item['name']}**! Please add balance to proceed.", parse_mode="Markdown")
+else:
+bot.send_message(message.chat.id, f"❌ Invalid quantity. Enter between 1 and {max_buy}:")
+else:
+bot.send_message(message.chat.id, "❌ Please enter a valid number.")
 
-    elif data == "service_grok":
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("1 Month - $2.0", callback_data="plan_Grok 1 Month ($2.0)"), types.InlineKeyboardButton("« Back", callback_data="cat_ai"))
-        bot.edit_message_text("🔥 *Grok Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+# Port listener and background threads execution
+if __name__ == '__main__':
+import http.server, socketserver
 
-    elif data == "service_deepseek":
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("30 Days - $12.0", callback_data="plan_DeepSeek 30 Days ($12.0)"), types.InlineKeyboardButton("« Back", callback_data="cat_ai"))
-        bot.edit_message_text("🧠 *DeepSeek Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+# Start Dummy HTTP Server for Render Port Check
+def run_dummy_server():
+port = int(os.environ.get("PORT", 10000))
+handler = http.server.SimpleHTTPRequestHandler
+with socketserver.TCPServer(("", port), handler) as httpd:
+httpd.serve_forever()
 
-    elif data == "service_spotify":
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(types.InlineKeyboardButton("1 Month - $0.6", callback_data="plan_Spotify 1 Month ($0.6)"), types.InlineKeyboardButton("« Back", callback_data="cat_apps"))
-        bot.edit_message_text("🎵 *Spotify Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
+threading.Thread(target=run_dummy_server, daemon=True).start()
 
-    elif data == "service_netflix":
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("1 Month - $0.8", callback_data="plan_Netflix 1 Month ($0.8)"), types.InlineKeyboardButton("« Back", callback_data="cat_apps"))
-        bot.edit_message_text("🎬 *Netflix Plans:*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
-
-    elif data == "service_capcut":
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("« Back", callback_data="cat_apps"))
-        bot.edit_message_text("❌ *CapCut Out of Stock.*", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
-
-    elif data.startswith("plan_"):
-        selected_plan = data.replace("plan_", "")
-        user_data[chat_id] = {'plan': selected_plan}
-        bot.edit_message_text(f"🧾 *Order:* `{selected_plan}`\n\nSelect Payment Method:", chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=payment_methods_keyboard())
-
-    elif data.startswith("pay_"):
-        plan_name = user_data.get(chat_id, {}).get('plan', 'Subscription')
-        pay_type = data.replace("pay_", "")
-
-        if pay_type == "usdt":
-            addr = USDT_ADDR
-            coin = "USDT (BEP20)"
-        elif pay_type == "trx":
-            addr = TRX_ADDR
-            coin = "TRX (TRC20)"
-        elif pay_type == "sol":
-            addr = SOL_ADDR
-            coin = "Solana (SOL)"
-        elif pay_type == "eth":
-            addr = ETH_ADDR
-            coin = "Ethereum (ETH)"
-        else:
-            addr = BTC_ADDR
-            coin = "Bitcoin (BTC)"
-
-        text = (
-            f"💳 *PAYMENT INSTRUCTIONS*\n"
-            f"───────────────────────────────\n"
-            f"📦 *Item:* `{plan_name}`\n"
-            f"🪙 *Coin:* `{coin}`\n\n"
-            f"📍 *Deposit Address:*\n`{addr}`\n"
-            f"───────────────────────────────\n"
-            f"📌 Send payment and click **'✅ I HAVE PAID'** to submit TxID."
-        )
-        
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton("✅ I HAVE PAID", callback_data="submit_txid"))
-        bot.edit_message_text(text, chat_id, call.message.message_id, parse_mode="Markdown", reply_markup=markup)
-
-    elif data == "submit_txid":
-        msg = bot.send_message(chat_id, "✍️ *Please send your Transaction Hash (TxID) in chat:*", parse_mode="Markdown")
-        bot.register_next_step_handler(msg, process_txid)
-
-def process_txid(message):
-    chat_id = message.chat.id
-    txid = message.text
-    user = message.from_user
-    plan = user_data.get(chat_id, {}).get('plan', 'Not Specified')
-
-    bot.send_message(chat_id, "⏳ *Verifying payment... You will be notified shortly.*", parse_mode="Markdown")
-
-    admin_markup = types.InlineKeyboardMarkup(row_width=2)
-    admin_markup.add(
-        types.InlineKeyboardButton("✅ Approve", callback_data=f"approve_{chat_id}"),
-        types.InlineKeyboardButton("❌ Reject", callback_data=f"reject_{chat_id}")
-    )
-
-    admin_msg = (
-        f"🚨 *NEW ORDER RECEIVED!*\n"
-        f"───────────────────────────────\n"
-        f"👤 *User:* {user.first_name} (@{user.username})\n"
-        f"🆔 *ID:* `{user.id}`\n"
-        f"📦 *Plan:* `{plan}`\n"
-        f"🧾 *TxID:* `{txid}`"
-    )
-    bot.send_message(ADMIN_ID, admin_msg, parse_mode="Markdown", reply_markup=admin_markup)
+# Start Multi-Product Inventory Manager Thread
+threading.Thread(target=multi_product_inventory_manager, daemon=True).start()
 
 bot.infinity_polling()
-  
