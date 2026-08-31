@@ -7,7 +7,7 @@ from telebot import TeleBot, types
 
 # Bot Token
 BOT_TOKEN = "8888661139:AAFfUeYVLG8kwQ4tDp1TWs_a9wWmqEyVuGQ" # Apna bot token yahan dalein
-bot = TeleBot(8888661139)
+bot = TeleBot(8888661139:AAFfUeYVLG8kwQ4tDp1TWs_a9wWmqEyVuGQ)
 
 # Dynamic Inventory Data - Updated Prices & Plans
 inventory = {
