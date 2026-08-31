@@ -5,7 +5,7 @@ import threading
 from telebot import TeleBot, types
 
 # Bot Token
-BOT_TOKEN = "888661139:AAFFUeYVLg8kwQ4tDp1TWs_a9wWmqEyVuGQ"
+BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
 bot = TeleBot(BOT_TOKEN)
 
 # Dynamic Inventory Data - Updated Prices & Plans
