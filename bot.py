@@ -39,16 +39,19 @@ CRYPTO_WALLETS = {
 # UPI Gateway
 UPI_ID = "xiaostore@upi"
 
+# Stock is strictly kept under 10 (1 to 9)
 inventory = {
     "ai": {
-        "chatgpt_1m": {"name": "ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(3, 10), "sold": random.randint(20, 35)},
-        "chatgpt_6m": {"name": "ChatGPT Plus 6 Month", "price": 5.50, "stock": random.randint(2, 8), "sold": random.randint(12, 28)},
-        "grok": {"name": "Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(2, 7), "sold": random.randint(8, 22)},
+        "chatgpt_1m": {"name": "ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(2, 8), "sold": random.randint(20, 35)},
+        "chatgpt_6m": {"name": "ChatGPT Plus 6 Month", "price": 5.50, "stock": random.randint(2, 7), "sold": random.randint(12, 28)},
+        "chatgpt_pro5": {"name": "ChatGPT Pro ×5", "price": 30.00, "stock": random.randint(1, 5), "sold": random.randint(3, 10)},
+        "chatgpt_pro20": {"name": "ChatGPT Pro ×20", "price": 70.00, "stock": random.randint(1, 4), "sold": random.randint(1, 5)},
+        "grok": {"name": "Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(2, 6), "sold": random.randint(8, 22)},
         "deepseek": {"name": "DeepSeek Pro 1 Month", "price": 12.00, "stock": random.randint(1, 4), "sold": random.randint(5, 15)}
     },
     "entertainment": {
-        "spotify": {"name": "Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(6, 15), "sold": random.randint(35, 60)},
-        "netflix": {"name": "Netflix Premium 1 Month", "price": 0.80, "stock": random.randint(1, 9), "sold": random.randint(18, 42)}
+        "spotify": {"name": "Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(3, 9), "sold": random.randint(35, 60)},
+        "netflix": {"name": "Netflix Premium 1 Month", "price": 0.80, "stock": random.randint(1, 5), "sold": random.randint(18, 42)}
     }
 }
 
@@ -101,6 +104,25 @@ def get_user(user_id, name):
     if user_id not in user_data:
         user_data[user_id] = {"balance": 0.00, "orders": 0, "lang": "en"}
     return user_data[user_id]
+
+# Background Worker to automatically simulate 1 sale every 1 hour and keep stock under 10
+def auto_hourly_sales():
+    while True:
+        time.sleep(3600)  # Wait for 1 hour
+        try:
+            cat_key = random.choice(list(inventory.keys()))
+            prod_key = random.choice(list(inventory[cat_key].keys()))
+            item = inventory[cat_key][prod_key]
+            
+            if item["stock"] > 0:
+                item["stock"] -= 1
+                item["sold"] += 1
+            
+            # Ensure stock never goes above 9 (strictly under 10)
+            if item["stock"] >= 10:
+                item["stock"] = random.randint(1, 9)
+        except Exception:
+            pass
 
 class DummyHandler(BaseHTTPRequestHandler):
     def do_GET(self):
@@ -223,8 +245,8 @@ def handle_callbacks(call):
                     f"🛒 **New Order Placed!**\n\n👤 **Buyer:** {name}\n🔗 **Username:** {username_str}\n🆔 **ID:** `{user_id}`\n📦 **Product:** {item['name']}\n💵 **Price:** `${item['price']:.2f}`", 
                     parse_mode="Markdown"
                 )
-            except Exception:
-                pass
+            except Exception as e:
+                print(f"Admin notification error: {e}")
         else:
             markup = types.InlineKeyboardMarkup(row_width=1)
             markup.add(
@@ -293,11 +315,17 @@ def handle_callbacks(call):
         bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
 if __name__ == "__main__":
+    # Start the dummy web server for Render
     server_thread = threading.Thread(target=run_server, daemon=True)
     server_thread.start()
+    
+    # Start the automated hourly sales worker thread
+    sales_thread = threading.Thread(target=auto_hourly_sales, daemon=True)
+    sales_thread.start()
     
     while True:
         try:
             bot.infinity_polling(timeout=60, long_polling_timeout=60)
         except Exception as e:
             time.sleep(3)
+        
