@@ -8,7 +8,7 @@ from telebot import TeleBot, types
 BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
 bot = TeleBot(BOT_TOKEN)
 
-# Admin Telegram ID
+# Admin Telegram ID (Aapka Telegram ID)
 ADMIN_ID = 888661139
 
 # Deposit Crypto Address
@@ -42,7 +42,7 @@ lang_text = {
         "deposit_title": "🪙 **Top-up Wallet:**\n\n📍 **Address:**\n`{address}`\n\n📌 Send payment, then click '✅ I HAVE PAID' or type your TxID.",
         "paid_btn": "✅ I HAVE PAID",
         "insufficient": "❌ **Insufficient Balance!**\n\nRequired: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Deposit Address:**\n`{address}`",
-        "success": "🎉 **Transaction Successful!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`"
+        "success": "🎉 **Order Placed Successfully!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`\n\n⏳ Admin has been notified for approval/delivery."
     },
     "hi": {
         "welcome": "⚡ **Xiao Elite Store mein swagat hai, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Neeche se option chunein:",
@@ -58,7 +58,7 @@ lang_text = {
         "deposit_title": "🪙 **Top-up Wallet:**\n\n📍 **Address:**\n`{address}`\n\n📌 Payment bhejein aur '✅ I HAVE PAID' dabayein.",
         "paid_btn": "✅ Maine Payment Kar Diya",
         "insufficient": "❌ **Balance Kam Hai!**\n\nChahiye: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Address:**\n`{address}`",
-        "success": "🎉 **Safal Raha!**\n\n📦 **Item:** {item_name}\n💸 **Kate Paise:** `${price:.2f}`\n💰 **Balance:** `${balance:.2f}`"
+        "success": "🎉 **Order Bhej Diya Gaya Hai!**\n\n📦 **Item:** {item_name}\n💸 **Kate Paise:** `${price:.2f}`\n💰 **Balance:** `${balance:.2f}`\n\n⏳ Admin ko approval ke liye notification bhej diya gaya hai."
     }
 }
 
@@ -75,9 +75,24 @@ def get_user(user_id, name):
 def send_welcome(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
+    username = message.from_user.username
+    username_str = f"@{username}" if username else "No Username"
+    
     user = get_user(user_id, name)
     t = lang_text[user["lang"]]
     
+    # Notify Admin when a new user starts the bot
+    try:
+        admin_alert = (
+            f"🚀 **New User Started Bot!**\n\n"
+            f"👤 **Name:** {name}\n"
+            f"🔗 **Username:** {username_str}\n"
+            f"🆔 **User ID:** `{user_id}`"
+        )
+        bot.send_message(ADMIN_ID, admin_alert, parse_mode="Markdown")
+    except Exception:
+        pass
+
     text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
@@ -94,21 +109,35 @@ def send_welcome(message):
 def handle_text(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
+    username = message.from_user.username
+    username_str = f"@{username}" if username else "No Username"
     text = message.text
     
     if text.startswith('/'):
         return
         
-    bot.send_message(message.chat.id, f"✅ **TxID Received:** `{text}`\n⏳ Verification pending.", parse_mode="Markdown")
+    bot.send_message(message.chat.id, f"✅ **TxID Received:** `{text}`\n⏳ Verification pending by admin.", parse_mode="Markdown")
     try:
-        bot.send_message(ADMIN_ID, f"🔔 **New TxID:**\n👤 {name} (`{user_id}`)\n💳 `{text}`", parse_mode="Markdown")
+        bot.send_message(
+            ADMIN_ID, 
+            f"🔔 **New TxID / Top-up Submitted!**\n\n"
+            f"👤 **User:** {name}\n"
+            f"🔗 **Username:** {username_str}\n"
+            f"🆔 **ID:** `{user_id}`\n"
+            f"💳 **TxID:** `{text}`", 
+            parse_mode="Markdown"
+        )
     except Exception:
         pass
 
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callbacks(call):
     user_id = call.from_user.id
-    user = get_user(user_id, call.from_user.first_name)
+    name = call.from_user.first_name
+    username = call.from_user.username
+    username_str = f"@{username}" if username else "No Username"
+    
+    user = get_user(user_id, name)
     lang = user["lang"]
     t = lang_text[lang]
     
@@ -146,9 +175,25 @@ def handle_callbacks(call):
             user["orders"] += 1
             item["stock"] -= 1
             item["sold"] += 1
+            
+            # Send Success response to User
             text = t["success"].format(item_name=item['name'], price=item['price'], balance=user['balance'])
             markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
             bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            
+            # Send Approval/Order Notification to Admin with Username
+            try:
+                order_alert = (
+                    f"🛒 **New Order Placed!**\n\n"
+                    f"👤 **Buyer Name:** {name}\n"
+                    f"🔗 **Username:** {username_str}\n"
+                    f"🆔 **User ID:** `{user_id}`\n"
+                    f"📦 **Product:** {item['name']}\n"
+                    f"💵 **Price Paid:** `${item['price']:.2f}`"
+                )
+                bot.send_message(ADMIN_ID, order_alert, parse_mode="Markdown")
+            except Exception:
+                pass
         else:
             text = t["insufficient"].format(price=item['price'], balance=user['balance'], address=DEPOSIT_ADDRESS)
             markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
