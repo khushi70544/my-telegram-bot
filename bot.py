@@ -9,7 +9,7 @@ from telebot import TeleBot, types
 BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
 bot = TeleBot(BOT_TOKEN)
 
-# Admin Telegram ID updated to your real ID
+# Admin Telegram ID
 ADMIN_ID = 8852375598
 
 # Your Real Crypto Addresses
@@ -36,19 +36,22 @@ CRYPTO_WALLETS = {
     }
 }
 
-# Stock is strictly kept under 10 (1 to 9)
+# Stock is strictly kept between 5 and 10
 inventory = {
     "ai": {
-        "chatgpt_1m": {"name": "ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(2, 8), "sold": random.randint(20, 35)},
-        "chatgpt_6m": {"name": "ChatGPT Plus 6 Month", "price": 5.50, "stock": random.randint(2, 7), "sold": random.randint(12, 28)},
-        "chatgpt_pro5": {"name": "ChatGPT Pro ×5", "price": 30.00, "stock": random.randint(1, 5), "sold": random.randint(3, 10)},
-        "chatgpt_pro20": {"name": "ChatGPT Pro ×20", "price": 70.00, "stock": random.randint(1, 4), "sold": random.randint(1, 5)},
-        "grok": {"name": "Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(2, 6), "sold": random.randint(8, 22)},
-        "deepseek": {"name": "DeepSeek Pro 1 Month", "price": 12.00, "stock": random.randint(1, 4), "sold": random.randint(5, 15)}
+        "chatgpt_1m": {"name": "ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(5, 10), "sold": random.randint(20, 35)},
+        "chatgpt_6m": {"name": "ChatGPT Plus 6 Month", "price": 5.50, "stock": random.randint(5, 10), "sold": random.randint(12, 28)},
+        "chatgpt_pro5": {"name": "ChatGPT Pro ×5", "price": 30.00, "stock": random.randint(5, 10), "sold": random.randint(3, 10)},
+        "chatgpt_pro20": {"name": "ChatGPT Pro ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 5)},
+        "grok": {"name": "Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(5, 10), "sold": random.randint(8, 22)},
+        "deepseek": {"name": "DeepSeek Pro 1 Month", "price": 12.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
+        "cloud_max_5x": {"name": "Cloud Max ×5", "price": 15.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
+        "cloud_max_20x": {"name": "Cloud Max ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)},
+        "claude_pro": {"name": "Claude Pro 1 Month", "price": 20.00, "stock": random.randint(5, 10), "sold": random.randint(10, 20)}
     },
     "entertainment": {
-        "spotify": {"name": "Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(3, 9), "sold": random.randint(35, 60)},
-        "netflix": {"name": "Netflix Premium 1 Month", "price": 0.80, "stock": random.randint(1, 5), "sold": random.randint(18, 42)}
+        "spotify": {"name": "Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(5, 10), "sold": random.randint(35, 60)},
+        "netflix": {"name": "Netflix Premium 1 Month", "price": 0.80, "stock": random.randint(5, 10), "sold": random.randint(18, 42)}
     }
 }
 
@@ -148,8 +151,8 @@ def auto_hourly_sales():
                 item["stock"] -= 1
                 item["sold"] += 1
             
-            if item["stock"] >= 10:
-                item["stock"] = random.randint(1, 9)
+            if item["stock"] > 10:
+                item["stock"] = random.randint(5, 10)
         except Exception:
             pass
 
