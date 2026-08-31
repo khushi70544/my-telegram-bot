@@ -36,9 +36,6 @@ CRYPTO_WALLETS = {
     }
 }
 
-# UPI Gateway
-UPI_ID = "xiaostore@upi"
-
 # Stock is strictly kept under 10 (1 to 9)
 inventory = {
     "ai": {
@@ -57,7 +54,7 @@ inventory = {
 
 lang_text = {
     "en": {
-        "welcome": "⚡ **Welcome to Xiao Elite Store, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Select a payment method or option below:",
+        "welcome": "⚡ **Welcome to Xiao Elite Store, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Select an option below:",
         "browse": "🤖 AI Services",
         "entertainment": "🎬 Entertainment",
         "topup": "💳 Top-up Wallet",
@@ -67,32 +64,66 @@ lang_text = {
         "catalog_title": "✨ **Store Catalog** ✨\n\nChoose a category:",
         "back_menu": "🔙 Main Menu",
         "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Balance: `${balance:.2f}`\n🛒 Orders: `{orders}`",
-        "deposit_title": "🪙 **Select Payment Gateway:**\n\nChoose your preferred payment method below:",
+        "deposit_title": "🪙 **Select Payment Gateway:**\n\nChoose your preferred crypto currency below:",
         "crypto_menu": "🪙 **Select Crypto Currency:**\n\nChoose which crypto you want to send:",
         "crypto_text": "🪙 **Pay via {coin_name}:**\n\n📍 **Address:**\n`{address}`\n\n📌 Send payment, then click '✅ I HAVE PAID' or type your TxID.",
-        "upi_text": "🇮🇳 **UPI / Indian Payment Gateway:**\n\n📍 **UPI ID:** `{upi}`\n\n📌 Pay via UPI, then click '✅ I HAVE PAID'.",
         "paid_btn": "✅ I HAVE PAID",
         "insufficient": "❌ **Insufficient Balance!**\n\nRequired: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Choose top-up method:**",
         "success": "🎉 **Order Placed Successfully!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`\n\n⏳ Admin has been notified for approval."
     },
-    "hi": {
-        "welcome": "⚡ **Xiao Elite Store mein swagat hai, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Neeche payment method ya option chunein:",
-        "browse": "🤖 AI Services",
-        "entertainment": "🎬 Entertainment",
-        "topup": "💳 Top-up Wallet",
-        "dashboard": "👤 Mera Dashboard",
-        "lang_btn": "🌐 Language: Hinglish",
-        "support": "📞 Support",
-        "catalog_title": "✨ **Store Catalog** ✨\n\nCategory chunein:",
-        "back_menu": "🔙 Main Menu",
-        "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Balance: `${balance:.2f}`\n🛒 Orders: `{orders}`",
-        "deposit_title": "🪙 **Payment Gateway Chunein:**\n\nApna pasandida payment method select karein:",
-        "crypto_menu": "🪙 **Crypto Currency Chunein:**\n\nKis crypto mein payment karni hai select karein:",
-        "crypto_text": "🪙 **{coin_name} dwara Payment Karein:**\n\n📍 **Address:**\n`{address}`\n\n📌 Payment bhejein aur '✅ I HAVE PAID' dabayein.",
-        "upi_text": "🇮🇳 **UPI Payment Gateway:**\n\n📍 **UPI ID:** `{upi}`\n\n📌 Payment karne ke baad '✅ I HAVE PAID' dabayein.",
-        "paid_btn": "✅ Maine Payment Kar Diya",
-        "insufficient": "❌ **Balance Kam Hai!**\n\nChahiye: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Top-up ke liye method chunein:**",
-        "success": "🎉 **Order Bhej Diya Gaya Hai!**\n\n📦 **Item:** {item_name}\n💸 **Kate Paise:** `${price:.2f}`\n💰 **Balance:** `${balance:.2f}`\n\n⏳ Admin ko approval ke liye bhej diya gaya hai."
+    "zh": {
+        "welcome": "⚡ **欢迎来到 Xiao Elite Store, {name}!** ⚡\n\n👤 **账户 ID:** `{user_id}`\n💰 **余额:** `${balance:.2f}`\n🛒 **订单:** `{orders}`\n\n✨ 请在下方选择一个选项：",
+        "browse": "🤖 AI 服务",
+        "entertainment": "🎬 娱乐服务",
+        "topup": "💳 充值钱包",
+        "dashboard": "👤 我的面板",
+        "lang_btn": "🌐 语言: 中文",
+        "support": "📞 客服支持",
+        "catalog_title": "✨ **商店目录** ✨\n\n请选择分类：",
+        "back_menu": "🔙 主菜单",
+        "account_title": "👤 **面板:**\n\n🆔 ID: `{user_id}`\n💰 余额: `${balance:.2f}`\n🛒 订单: `{orders}`",
+        "deposit_title": "🪙 **选择支付网关:**\n\n请在下方选择您偏好的加密货币：",
+        "crypto_menu": "🪙 **选择加密货币:**\n\n请选择您要发送的加密货币：",
+        "crypto_text": "🪙 **通过 {coin_name} 支付:**\n\n📍 **地址:**\n`{address}`\n\n📌 请发送付款，然后点击 '✅ 我已付款' 或发送交易哈希 (TxID)。",
+        "paid_btn": "✅ 我已付款",
+        "insufficient": "❌ **余额不足！**\n\n需要: `${price:.2f}` | 余额: `${balance:.2f}`\n\n📍 **请选择充值方法：**",
+        "success": "🎉 **订单提交成功！**\n\n📦 **商品:** {item_name}\n💸 **扣除:** `${price:.2f}`\n💰 **新余额:** `${balance:.2f}`\n\n⏳ 已通知管理员审核。"
+    },
+    "id": {
+        "welcome": "⚡ **Selamat datang di Xiao Elite Store, {name}!** ⚡\n\n👤 **ID Akun:** `{user_id}`\n💰 **Saldo:** `${balance:.2f}`\n🛒 **Pesanan:** `{orders}`\n\n✨ Pilih opsi di bawah ini:",
+        "browse": "🤖 Layanan AI",
+        "entertainment": "🎬 Hiburan",
+        "topup": "💳 Top-up Saldo",
+        "dashboard": "👤 Dashboard Saya",
+        "lang_btn": "🌐 Bahasa: Indonesia",
+        "support": "📞 Dukungan",
+        "catalog_title": "✨ **Katalog Toko** ✨\n\nPilih kategori:",
+        "back_menu": "🔙 Menu Utama",
+        "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Saldo: `${balance:.2f}`\n🛒 Pesanan: `{orders}`",
+        "deposit_title": "🪙 **Pilih Metode Pembayaran:**\n\nPilih mata uang kripto pilihan Anda di bawah ini:",
+        "crypto_menu": "🪙 **Pilih Mata Uang Kripto:**\n\nPilih kripto yang ingin Anda kirim:",
+        "crypto_text": "🪙 **Bayar via {coin_name}:**\n\n📍 **Alamat:**\n`{address}`\n\n📌 Kirim pembayaran, lalu klik '✅ Saya Sudah Bayar' atau kirim TxID Anda.",
+        "paid_btn": "✅ Saya Sudah Bayar",
+        "insufficient": "❌ **Saldo Tidak Cukup!**\n\nDibutuhkan: `${price:.2f}` | Saldo: `${balance:.2f}`\n\n📍 **Pilih metode top-up:**",
+        "success": "🎉 **Pesanan Berhasil Dibuat!**\n\n📦 **Item:** {item_name}\n💸 **Terpotong:** `${price:.2f}`\n💰 **Saldo Baru:** `${balance:.2f}`\n\n⏳ Admin telah diberitahu untuk persetujuan."
+    },
+    "ru": {
+        "welcome": "⚡ **Добро пожаловать в Xiao Elite Store, {name}!** ⚡\n\n👤 **ID аккаунта:** `{user_id}`\n💰 **Баланс:** `${balance:.2f}`\n🛒 **Заказы:** `{orders}`\n\n✨ Выберите вариант ниже:",
+        "browse": "🤖 ИИ Сервисы",
+        "entertainment": "🎬 Развлечения",
+        "topup": "💳 Пополнить баланс",
+        "dashboard": "👤 Мой кабинет",
+        "lang_btn": "🌐 Язык: Русский",
+        "support": "📞 Поддержка",
+        "catalog_title": "✨ **Каталог товаров** ✨\n\nВыберите категорию:",
+        "back_menu": "🔙 Главное меню",
+        "account_title": "👤 **Кабинет:**\n\n🆔 ID: `{user_id}`\n💰 Баланс: `${balance:.2f}`\n🛒 Заказы: `{orders}`",
+        "deposit_title": "🪙 **Выберите способ оплаты:**\n\nВыберите криптовалюту ниже:",
+        "crypto_menu": "🪙 **Выберите криптовалюту:**\n\nВыберите нужную криптовалюту для отправки:",
+        "crypto_text": "🪙 **Оплата через {coin_name}:**\n\n📍 **Адрес:**\n`{address}`\n\n📌 Отправьте платеж, затем нажмите '✅ Я оплатил' или отправьте TxID.",
+        "paid_btn": "✅ Я оплатил",
+        "insufficient": "❌ **Недостаточно средств!**\n\nТребуется: `${price:.2f}` | Баланс: `${balance:.2f}`\n\n📍 **Выберите способ пополнения:**",
+        "success": "🎉 **Заказ успешно оформлен!**\n\n📦 **Товар:** {item_name}\n💸 **Списано:** `${price:.2f}`\n💰 **Новый баланс:** `${balance:.2f}`\n\n⏳ Администратор уведомлен для подтверждения."
     }
 }
 
@@ -105,10 +136,9 @@ def get_user(user_id, name):
         user_data[user_id] = {"balance": 0.00, "orders": 0, "lang": "en"}
     return user_data[user_id]
 
-# Background Worker to automatically simulate 1 sale every 1 hour and keep stock under 10
 def auto_hourly_sales():
     while True:
-        time.sleep(3600)  # Wait for 1 hour
+        time.sleep(3600)
         try:
             cat_key = random.choice(list(inventory.keys()))
             prod_key = random.choice(list(inventory[cat_key].keys()))
@@ -118,7 +148,6 @@ def auto_hourly_sales():
                 item["stock"] -= 1
                 item["sold"] += 1
             
-            # Ensure stock never goes above 9 (strictly under 10)
             if item["stock"] >= 10:
                 item["stock"] = random.randint(1, 9)
         except Exception:
@@ -201,8 +230,27 @@ def handle_callbacks(call):
     bot.answer_callback_query(call.id)
     
     if call.data == "toggle_lang":
-        user["lang"] = "hi" if lang == "en" else "en"
-        call.data = "main_menu"
+        langs = ["en", "zh", "id", "ru"]
+        current_idx = langs.index(user["lang"]) if user["lang"] in langs else 0
+        next_idx = (current_idx + 1) % len(langs)
+        user["lang"] = langs[next_idx]
+        
+        t = lang_text[user["lang"]]
+        text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        markup.add(
+            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
+            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
+            types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
+            types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
+            types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
+            types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
+        )
+        try:
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        except Exception:
+            pass
+        return
         
     elif call.data == "cat_ai" or call.data == "cat_entertainment":
         cat_key = call.data.split("_")[1]
@@ -250,17 +298,15 @@ def handle_callbacks(call):
         else:
             markup = types.InlineKeyboardMarkup(row_width=1)
             markup.add(
-                types.InlineKeyboardButton("🪙 Pay via Crypto", callback_data="add_funds"),
-                types.InlineKeyboardButton("🇮🇳 Pay via UPI", callback_data="pay_upi")
+                types.InlineKeyboardButton("🪙 Pay via Crypto", callback_data="crypto_menu"),
+                types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
             )
-            markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
             bot.edit_message_text(t["insufficient"].format(price=item['price'], balance=user['balance']), chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "add_funds":
         markup = types.InlineKeyboardMarkup(row_width=1)
         markup.add(
             types.InlineKeyboardButton("🪙 Crypto Currencies", callback_data="crypto_menu"),
-            types.InlineKeyboardButton("🇮🇳 UPI / QR Code", callback_data="pay_upi"),
             types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
         )
         bot.edit_message_text(t["deposit_title"], chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
@@ -284,15 +330,6 @@ def handle_callbacks(call):
             )
             bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
-    elif call.data == "pay_upi":
-        text = t["upi_text"].format(upi=UPI_ID)
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        markup.add(
-            types.InlineKeyboardButton(t["paid_btn"], callback_data="tx_submitted"),
-            types.InlineKeyboardButton(t["back_menu"], callback_data="add_funds")
-        )
-        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
     elif call.data == "tx_submitted":
         bot.send_message(call.message.chat.id, "✍️ Please send your Transaction Reference / TxID or Screenshot details in chat:")
 
@@ -315,11 +352,9 @@ def handle_callbacks(call):
         bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
 if __name__ == "__main__":
-    # Start the dummy web server for Render
     server_thread = threading.Thread(target=run_server, daemon=True)
     server_thread.start()
     
-    # Start the automated hourly sales worker thread
     sales_thread = threading.Thread(target=auto_hourly_sales, daemon=True)
     sales_thread.start()
     
@@ -328,4 +363,3 @@ if __name__ == "__main__":
             bot.infinity_polling(timeout=60, long_polling_timeout=60)
         except Exception as e:
             time.sleep(3)
-        
