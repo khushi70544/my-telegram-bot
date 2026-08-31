@@ -156,11 +156,8 @@ return markup
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
 u = get_user(message.from_user.id, message.from_user.first_name)
-caption = f"🌙 **Good evening, {message.from_user.first_name}**\n\n🤑 Balance: **${u['balance']:.2f}**\n🏪 Total orders: **{u['orders']}**"
-banner_url = "
-https://picsum.photos/800/400
-"
-
+caption = f"🌙 **Good evening, {message.from_user.first_name}**"
+banner_url = "https://picsum.photos/800/400"
 try:
 bot.send_photo(message.chat.id, banner_url, caption=caption, parse_mode="Markdown", reply_markup=main_keyboard())
 except Exception:
