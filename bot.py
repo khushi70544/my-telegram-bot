@@ -8,13 +8,12 @@ from telebot import TeleBot, types
 BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
 bot = TeleBot(BOT_TOKEN)
 
-# Admin Telegram ID (Yahan apni Telegram numeric ID daalein taaki TxID aapko mil sake)
-ADMIN_ID = 888661139  # Apna Admin ID yahan daal sakte hain
+# Admin Telegram ID
+ADMIN_ID = 888661139
 
 # Deposit Crypto Address
 DEPOSIT_ADDRESS = "0x43Be5B53249d33C7A77ab012c6E3508937b87d5A"
 
-# Categorized Inventory Data with Randomized Stocks and Sales
 inventory = {
     "ai": {
         "chatgpt_1m": {"name": "ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(3, 10), "sold": random.randint(20, 35)},
@@ -28,100 +27,58 @@ inventory = {
     }
 }
 
-# Multi-Language Dictionaries (English & Hinglish)
 lang_text = {
     "en": {
-        "welcome": "⚡ **Welcome to Xiao Elite Store, {name}!** ⚡\n\n━━━━━━━━━━━━━━━━━━━\n👤 **Account ID:** `{user_id}`\n💰 **Wallet Balance:** `${balance:.2f}`\n🛒 **Completed Orders:** `{orders}`\n━━━━━━━━━━━━━━━━━━━\n\n✨ Select a category below or change language:",
+        "welcome": "⚡ **Welcome to Xiao Elite Store, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Select an option below:",
         "browse": "🤖 AI Services",
         "entertainment": "🎬 Entertainment",
         "topup": "💳 Top-up Wallet",
         "dashboard": "👤 My Dashboard",
         "lang_btn": "🌐 Language: English",
-        "support": "📞 Premium Support",
-        "catalog_title": "✨ **Xiao Elite Store Catalog** ✨\n\nChoose a curated category below:",
+        "support": "📞 Support",
+        "catalog_title": "✨ **Store Catalog** ✨\n\nChoose a category:",
         "back_menu": "🔙 Main Menu",
-        "account_title": "👤 **Elite User Dashboard:**\n\n🆔 **Telegram ID:** `{user_id}`\n💰 **Current Balance:** `${balance:.2f}`\n🛒 **Total Purchases:** `{orders}`\n🌐 **Language:** English",
-        "deposit_title": "🪙 **Top-up Wallet Gateway:**\n\n📍 **Deposit Address:**\n`{address}`\n\n📌 Send your crypto payment to the address above, then click '✅ I HAVE PAID' or type your TxID directly into chat.",
+        "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Balance: `${balance:.2f}`\n🛒 Orders: `{orders}`",
+        "deposit_title": "🪙 **Top-up Wallet:**\n\n📍 **Address:**\n`{address}`\n\n📌 Send payment, then click '✅ I HAVE PAID' or type your TxID.",
         "paid_btn": "✅ I HAVE PAID",
-        "insufficient": "❌ **Insufficient Wallet Funds!**\n\nRequired: `${price:.2f}` | Your Balance: `${balance:.2f}`\nShortfall: `${shortage:.2f}`\n\n📍 **Official Crypto Deposit Address:**\n`{address}`",
-        "success": "🎉 **Transaction Successful!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`\n\n🔑 Your access details have been successfully processed and dispatched."
+        "insufficient": "❌ **Insufficient Balance!**\n\nRequired: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Deposit Address:**\n`{address}`",
+        "success": "🎉 **Transaction Successful!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`"
     },
     "hi": {
-        "welcome": "⚡ **Xiao Elite Store mein aapka swagat hai, {name}!** ⚡\n\n━━━━━━━━━━━━━━━━━━━\n👤 **Account ID:** `{user_id}`\n💰 **Wallet Balance:** `${balance:.2f}`\n🛒 **Completed Orders:** `{orders}`\n━━━━━━━━━━━━━━━━━━━\n\n✨ Neeche category select karein ya bhasha badlein:",
+        "welcome": "⚡ **Xiao Elite Store mein swagat hai, {name}!** ⚡\n\n👤 **Account ID:** `{user_id}`\n💰 **Balance:** `${balance:.2f}`\n🛒 **Orders:** `{orders}`\n\n✨ Neeche se option chunein:",
         "browse": "🤖 AI Services",
         "entertainment": "🎬 Entertainment",
         "topup": "💳 Top-up Wallet",
         "dashboard": "👤 Mera Dashboard",
         "lang_btn": "🌐 Language: Hinglish",
-        "support": "📞 Premium Support",
-        "catalog_title": "✨ **Xiao Elite Store Catalog** ✨\n\nNeeche di gayi category select karein:",
+        "support": "📞 Support",
+        "catalog_title": "✨ **Store Catalog** ✨\n\nCategory chunein:",
         "back_menu": "🔙 Main Menu",
-        "account_title": "👤 **User Dashboard:**\n\n🆔 **Telegram ID:** `{user_id}`\n💰 **Current Balance:** `${balance:.2f}`\n🛒 **Total Purchases:** `{orders}`\n🌐 **Bhasha:** Hinglish",
-        "deposit_title": "🪙 **Top-up Wallet Gateway:**\n\n📍 **Deposit Address:**\n`{address}`\n\n📌 Upar diye gaye address par payment bhejein aur '✅ I HAVE PAID' par click karein ya TxID chat me bhejein.",
-        "paid_btn": "✅ Maine Payment Kar Diya Hai",
-        "insufficient": "❌ **Wallet Me Balance Kam Hai!**\n\nChahiye: `${price:.2f}` | Aapka Balance: `${balance:.2f}`\nKam Pad Rahe Hain: `${shortage:.2f}`\n\n📍 **Crypto Deposit Address:**\n`{address}`",
-        "success": "🎉 **Transaction Safal Rahi!**\n\n📦 **Item:** {item_name}\n💸 **Kate Hue Paise:** `${price:.2f}`\n💰 **Naya Balance:** `${balance:.2f}`\n\n🔑 Aapki details bhej di gayi hain."
+        "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Balance: `${balance:.2f}`\n🛒 Orders: `{orders}`",
+        "deposit_title": "🪙 **Top-up Wallet:**\n\n📍 **Address:**\n`{address}`\n\n📌 Payment bhejein aur '✅ I HAVE PAID' dabayein.",
+        "paid_btn": "✅ Maine Payment Kar Diya",
+        "insufficient": "❌ **Balance Kam Hai!**\n\nChahiye: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Address:**\n`{address}`",
+        "success": "🎉 **Safal Raha!**\n\n📦 **Item:** {item_name}\n💸 **Kate Paise:** `${price:.2f}`\n💰 **Balance:** `${balance:.2f}`"
     }
 }
 
-# User Balances & Registered Users Set
 user_data = {}
 registered_users = set()
 
 def get_user(user_id, name):
     registered_users.add(user_id)
     if user_id not in user_data:
-        user_data[user_id] = {"balance": 0.00, "orders": 0, "state": None, "selected_prod": None, "lang": "en"}
+        user_data[user_id] = {"balance": 0.00, "orders": 0, "lang": "en"}
     return user_data[user_id]
-
-def broadcast_to_users(msg_text):
-    for user_id in list(registered_users):
-        try:
-            bot.send_message(user_id, msg_text, parse_mode="Markdown")
-        except Exception:
-            pass
-
-def multi_product_inventory_manager():
-    time.sleep(600)
-    for category in inventory.values():
-        for key in category:
-            if category[key]["stock"] > 0:
-                category[key]["sold"] += category[key]["stock"]
-                category[key]["stock"] = 0
-
-    while True:
-        for category in inventory.values():
-            for key, item in category.items():
-                if item["stock"] <= 0:
-                    out_of_stock_msg = (
-                        "⚠️ **OUT OF STOCK!**\n\n"
-                        f"📦 **{item['name']}** is currently completely sold out!\n\n"
-                        f"📊 **Total Sold:** `{item['sold']}`\n"
-                    )
-                    broadcast_to_users(out_of_stock_msg)
-        
-        time.sleep(1800) 
-        
-        for category in inventory.values():
-            for key, item in category.items():
-                item["stock"] = random.randint(3, 10)
-                restock_msg = (
-                    "✅ **RESTOCK ALERT!**\n\n"
-                    f"📦 **{item['name']}** is back in stock!\n"
-                    f"🛒 **Available Stock:** `{item['stock']}`\n"
-                )
-                broadcast_to_users(restock_msg)
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
     user = get_user(user_id, name)
-    lang = user["lang"]
+    t = lang_text[user["lang"]]
     
-    t = lang_text[lang]
-    welcome_text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
-    
+    text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
         types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
@@ -131,35 +88,20 @@ def send_welcome(message):
         types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
         types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
     )
-    
-    bot.send_message(message.chat.id, welcome_text, reply_markup=markup, parse_mode="Markdown")
+    bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
 
-# Handle incoming text (Like TxID sent by user)
 @bot.message_handler(func=lambda message: True)
-def handle_all_messages(message):
+def handle_text(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
     text = message.text
     
     if text.startswith('/'):
-        return  # Ignore other commands
+        return
         
-    # User ne TxID bheja hai, usko confirm karo aur admin ko forward karo
-    confirmation_msg = (
-        "✅ **Transaction Hash (TxID) Received!**\n\n"
-        f"📝 **Your TxID:** `{text}`\n\n"
-        "⏳ Your payment is under verification by our team. Balance will be credited shortly after confirmation."
-    )
-    bot.send_message(message.chat.id, confirmation_msg, parse_mode="Markdown")
-    
-    # Admin ko notification bhejo
-    admin_notif = (
-        f"🔔 **New Top-up Request / TxID Submitted!**\n\n"
-        f"👤 **User:** {name} (`{user_id}`)\n"
-        f"💳 **TxID:** `{text}`"
-    )
+    bot.send_message(message.chat.id, f"✅ **TxID Received:** `{text}`\n⏳ Verification pending.", parse_mode="Markdown")
     try:
-        bot.send_message(ADMIN_ID, admin_notif, parse_mode="Markdown")
+        bot.send_message(ADMIN_ID, f"🔔 **New TxID:**\n👤 {name} (`{user_id}`)\n💳 `{text}`", parse_mode="Markdown")
     except Exception:
         pass
 
@@ -172,103 +114,63 @@ def handle_callbacks(call):
     
     if call.data == "toggle_lang":
         user["lang"] = "hi" if lang == "en" else "en"
-        handle_callbacks(types.CallbackQuery(id=call.id, from_user=call.from_user, chat_instance=call.chat_instance, message=call.message, data="main_menu"))
-        return
-
+        call.data = "main_menu"
+        
     if call.data == "cat_ai" or call.data == "cat_entertainment":
         cat_key = call.data.split("_")[1]
-        cat_name = "🤖 AI Subscriptions" if cat_key == "ai" else "🎬 Entertainment & Streaming"
-        
         markup = types.InlineKeyboardMarkup(row_width=1)
         for key, item in inventory[cat_key].items():
-            stock_status = f"🟢 Stock: {item['stock']}" if item['stock'] > 0 else "🔴 Sold Out"
-            btn_text = f"🔹 {item['name']} | ${item['price']:.2f} ({stock_status})"
-            markup.add(types.InlineKeyboardButton(btn_text, callback_data=f"item_{cat_key}_{key}"))
-        
-        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="browse_shop"))
-        bot.edit_message_text(f"📂 **{cat_name}**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "browse_shop":
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
-            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
-            types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
-        )
+            stock = f"🟢 {item['stock']}" if item['stock'] > 0 else "🔴 Sold Out"
+            markup.add(types.InlineKeyboardButton(f"{item['name']} | ${item['price']:.2f} ({stock})", callback_data=f"item_{cat_key}_{key}"))
+        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
         bot.edit_message_text(t["catalog_title"], chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("item_"):
         _, cat_key, prod_key = call.data.split("_", 2)
         item = inventory[cat_key].get(prod_key)
-        if not item:
-            return
+        if not item: return
         
-        stock_display = f"`{item['stock']} available`" if item['stock'] > 0 else "`Out of Stock`"
-        prod_text = (
-            f"💎 **Product Specifications:**\n\n"
-            f"📌 **Service:** {item['name']}\n"
-            f"💵 **Price:** `${item['price']:.2f}`\n"
-            f"📦 **Stock:** {stock_display}\n"
-            f"📊 **Sales:** `{item['sold']}`\n"
-        )
-        
+        text = f"📌 **{item['name']}**\n💵 Price: `${item['price']:.2f}`\n📦 Stock: `{item['stock']}`"
         markup = types.InlineKeyboardMarkup(row_width=1)
         if item['stock'] > 0:
-            markup.add(types.InlineKeyboardButton("⚡ Instant Buy (Wallet)", callback_data=f"pay_wallet_{cat_key}_{prod_key}"))
-        markup.add(types.InlineKeyboardButton("🪙 Crypto Top-up", callback_data="add_funds"))
+            markup.add(types.InlineKeyboardButton("⚡ Instant Buy", callback_data=f"buy_{cat_key}_{prod_key}"))
+        markup.add(types.InlineKeyboardButton("🪙 Top-up", callback_data="add_funds"))
         markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data=f"cat_{cat_key}"))
-        
-        bot.edit_message_text(prod_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
-    elif call.data.startswith("pay_wallet_"):
-        _, _, cat_key, prod_key = call.data.split("_", 3)
+    elif call.data.startswith("buy_"):
+        _, cat_key, prod_key = call.data.split("_", 2)
         item = inventory[cat_key].get(prod_key)
-        
-        if not item or item["stock"] <= 0:
-            bot.answer_callback_query(call.id, "Out of stock!", show_alert=True)
-            return
-            
         if user["balance"] >= item["price"]:
             user["balance"] -= item["price"]
             user["orders"] += 1
             item["stock"] -= 1
             item["sold"] += 1
-            
-            success_text = t["success"].format(item_name=item['name'], price=item['price'], balance=user['balance'])
-            markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="browse_shop"))
-            bot.edit_message_text(success_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            text = t["success"].format(item_name=item['name'], price=item['price'], balance=user['balance'])
+            markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
         else:
-            shortage = item["price"] - user["balance"]
-            fail_text = t["insufficient"].format(price=item['price'], balance=user['balance'], shortage=shortage, address=DEPOSIT_ADDRESS)
-            markup = types.InlineKeyboardMarkup(row_width=1)
-            markup.add(
-                types.InlineKeyboardButton("✅ Submit TxID", callback_data="deposit_paid"),
-                types.InlineKeyboardButton(t["back_menu"], callback_data=f"item_{cat_key}_{prod_key}")
-            )
-            bot.edit_message_text(fail_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            text = t["insufficient"].format(price=item['price'], balance=user['balance'], address=DEPOSIT_ADDRESS)
+            markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
-    elif call.data == "add_funds" or call.data == "deposit_paid":
-        deposit_text = t["deposit_title"].format(address=DEPOSIT_ADDRESS)
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        markup.add(
+    elif call.data == "add_funds" or call.data == "tx_submitted":
+        text = t["deposit_title"].format(address=DEPOSIT_ADDRESS)
+        markup = types.InlineKeyboardMarkup().add(
             types.InlineKeyboardButton(t["paid_btn"], callback_data="tx_submitted"),
             types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
         )
-        bot.edit_message_text(deposit_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "tx_submitted":
-        bot.answer_callback_query(call.id, "Send your TxID in chat!", show_alert=True)
-        bot.send_message(call.message.chat.id, "✍️ Please send your Transaction Hash (TxID) in chat:")
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        if call.data == "tx_submitted":
+            bot.send_message(call.message.chat.id, "✍️ Send your Transaction Hash (TxID):")
 
     elif call.data == "my_account":
-        account_text = t["account_title"].format(user_id=user_id, balance=user['balance'], orders=user['orders'])
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
-        bot.edit_message_text(account_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        text = t["account_title"].format(user_id=user_id, balance=user['balance'], orders=user['orders'])
+        markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "main_menu":
-        welcome_text = t["welcome"].format(name=call.from_user.first_name, user_id=user_id, balance=user['balance'], orders=user['orders'])
+        text = t["welcome"].format(name=call.from_user.first_name, user_id=user_id, balance=user['balance'], orders=user['orders'])
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
@@ -278,229 +180,11 @@ def handle_callbacks(call):
             types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
             types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
         )
-        bot.edit_message_text(welcome_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
 if __name__ == "__main__":
-    inventory_thread = threading.Thread(target=multi_product_inventory_manager, daemon=True)
-    inventory_thread.start()
-    
-    bot.infinity_polling()
-        "support": "📞 Premium Support",
-        "catalog_title": "✨ **Xiao Elite Store Catalog** ✨\n\nChoose a curated category below:",
-        "back_menu": "🔙 Main Menu",
-        "account_title": "👤 **Elite User Dashboard:**\n\n🆔 **Telegram ID:** `{user_id}`\n💰 **Current Balance:** `${balance:.2f}`\n🛒 **Total Purchases:** `{orders}`\n🌐 **Language:** English",
-        "deposit_title": "🪙 **Top-up Wallet Gateway:**\n\n📍 **Deposit Address:**\n`{address}`\n\n📌 Send your crypto payment to the address above, then click '✅ I HAVE PAID' or type your TxID directly into chat.",
-        "paid_btn": "✅ I HAVE PAID",
-        "insufficient": "❌ **Insufficient Wallet Funds!**\n\nRequired: `${price:.2f}` | Your Balance: `${balance:.2f}`\nShortfall: `${shortage:.2f}`\n\n📍 **Official Crypto Deposit Address:**\n`{address}`",
-        "success": "🎉 **Transaction Successful!**\n\n📦 **Item:** {item_name}\n💸 **Deducted:** `${price:.2f}`\n💰 **New Balance:** `${balance:.2f}`\n\n🔑 Your access details have been successfully processed and dispatched."
-    },
-    "hi": {
-        "welcome": "⚡ **Xiao Elite Store mein aapka swagat hai, {name}!** ⚡\n\n━━━━━━━━━━━━━━━━━━━\n👤 **Account ID:** `{user_id}`\n💰 **Wallet Balance:** `${balance:.2f}`\n🛒 **Completed Orders:** `{orders}`\n━━━━━━━━━━━━━━━━━━━\n\n✨ Neeche category select karein ya bhasha badlein:",
-        "browse": "🤖 AI Services",
-        "entertainment": "🎬 Entertainment",
-        "topup": "💳 Top-up Wallet",
-        "dashboard": "👤 Mera Dashboard",
-        "lang_btn": "🌐 Language: Hinglish",
-        "support": "📞 Premium Support",
-        "catalog_title": "✨ **Xiao Elite Store Catalog** ✨\n\nNeeche di gayi category select karein:",
-        "back_menu": "🔙 Main Menu",
-        "account_title": "👤 **User Dashboard:**\n\n🆔 **Telegram ID:** `{user_id}`\n💰 **Current Balance:** `${balance:.2f}`\n🛒 **Total Purchases:** `{orders}`\n🌐 **Bhasha:** Hinglish",
-        "deposit_title": "🪙 **Top-up Wallet Gateway:**\n\n📍 **Deposit Address:**\n`{address}`\n\n📌 Upar diye gaye address par payment bhejein aur '✅ I HAVE PAID' par click karein ya TxID chat me bhejein.",
-        "paid_btn": "✅ Maine Payment Kar Diya Hai",
-        "insufficient": "❌ **Wallet Me Balance Kam Hai!**\n\nChahiye: `${price:.2f}` | Aapka Balance: `${balance:.2f}`\nKam Pad Rahe Hain: `${shortage:.2f}`\n\n📍 **Crypto Deposit Address:**\n`{address}`",
-        "success": "🎉 **Transaction Safal Rahi!**\n\n📦 **Item:** {item_name}\n💸 **Kate Hue Paise:** `${price:.2f}`\n💰 **Naya Balance:** `${balance:.2f}`\n\n🔑 Aapki details bhej di gayi hain."
-    }
-}
-
-# User Balances & Registered Users Set
-user_data = {}
-registered_users = set()
-
-def get_user(user_id, name):
-    registered_users.add(user_id)
-    if user_id not in user_data:
-        user_data[user_id] = {"balance": 0.00, "orders": 0, "state": None, "selected_prod": None, "lang": "en"}
-    return user_data[user_id]
-
-def broadcast_to_users(msg_text):
-    for user_id in list(registered_users):
-        try:
-            bot.send_message(user_id, msg_text, parse_mode="Markdown")
-        except Exception:
-            pass
-
-def multi_product_inventory_manager():
-    time.sleep(600)
-    for category in inventory.values():
-        for key in category:
-            if category[key]["stock"] > 0:
-                category[key]["sold"] += category[key]["stock"]
-                category[key]["stock"] = 0
-
     while True:
-        for category in inventory.values():
-            for key, item in category.items():
-                if item["stock"] <= 0:
-                    out_of_stock_msg = (
-                        "⚠️ **OUT OF STOCK!**\n\n"
-                        f"📦 **{item['name']}** is currently completely sold out!\n\n"
-                        f"📊 **Total Sold:** `{item['sold']}`\n"
-                    )
-                    broadcast_to_users(out_of_stock_msg)
-        
-        time.sleep(1800) 
-        
-        for category in inventory.values():
-            for key, item in category.items():
-                item["stock"] = random.randint(3, 10)
-                restock_msg = (
-                    "✅ **RESTOCK ALERT!**\n\n"
-                    f"📦 **{item['name']}** is back in stock!\n"
-                    f"🛒 **Available Stock:** `{item['stock']}`\n"
-                )
-                broadcast_to_users(restock_msg)
-
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    user_id = message.from_user.id
-    name = message.from_user.first_name
-    user = get_user(user_id, name)
-    lang = user["lang"]
-    
-    t = lang_text[lang]
-    welcome_text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
-    
-    markup = types.InlineKeyboardMarkup(row_width=2)
-    markup.add(
-        types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
-        types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
-        types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
-        types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
-        types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
-        types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
-    )
-    
-    bot.send_message(message.chat.id, welcome_text, reply_markup=markup, parse_mode="Markdown")
-
-@bot.callback_query_handler(func=lambda call: True)
-def handle_callbacks(call):
-    user_id = call.from_user.id
-    user = get_user(user_id, call.from_user.first_name)
-    lang = user["lang"]
-    t = lang_text[lang]
-    
-    if call.data == "toggle_lang":
-        user["lang"] = "hi" if lang == "en" else "en"
-        handle_callbacks(types.CallbackQuery(id=call.id, from_user=call.from_user, chat_instance=call.chat_instance, message=call.message, data="main_menu"))
-        return
-
-    if call.data == "cat_ai" or call.data == "cat_entertainment":
-        cat_key = call.data.split("_")[1]
-        cat_name = "🤖 AI Subscriptions" if cat_key == "ai" else "🎬 Entertainment & Streaming"
-        
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        for key, item in inventory[cat_key].items():
-            stock_status = f"🟢 Stock: {item['stock']}" if item['stock'] > 0 else "🔴 Sold Out"
-            btn_text = f"🔹 {item['name']} | ${item['price']:.2f} ({stock_status})"
-            markup.add(types.InlineKeyboardButton(btn_text, callback_data=f"item_{cat_key}_{key}"))
-        
-        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="browse_shop"))
-        bot.edit_message_text(f"📂 **{cat_name}**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "browse_shop":
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
-            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
-            types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
-        )
-        bot.edit_message_text(t["catalog_title"], chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data.startswith("item_"):
-        _, cat_key, prod_key = call.data.split("_", 2)
-        item = inventory[cat_key].get(prod_key)
-        if not item:
-            return
-        
-        stock_display = f"`{item['stock']} available`" if item['stock'] > 0 else "`Out of Stock`"
-        prod_text = (
-            f"💎 **Product Specifications:**\n\n"
-            f"📌 **Service:** {item['name']}\n"
-            f"💵 **Price:** `${item['price']:.2f}`\n"
-            f"📦 **Stock:** {stock_display}\n"
-            f"📊 **Sales:** `{item['sold']}`\n"
-        )
-        
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        if item['stock'] > 0:
-            markup.add(types.InlineKeyboardButton("⚡ Instant Buy (Wallet)", callback_data=f"pay_wallet_{cat_key}_{prod_key}"))
-        markup.add(types.InlineKeyboardButton("🪙 Crypto Top-up", callback_data="add_funds"))
-        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data=f"cat_{cat_key}"))
-        
-        bot.edit_message_text(prod_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data.startswith("pay_wallet_"):
-        _, _, cat_key, prod_key = call.data.split("_", 3)
-        item = inventory[cat_key].get(prod_key)
-        
-        if not item or item["stock"] <= 0:
-            bot.answer_callback_query(call.id, "Out of stock!", show_alert=True)
-            return
-            
-        if user["balance"] >= item["price"]:
-            user["balance"] -= item["price"]
-            user["orders"] += 1
-            item["stock"] -= 1
-            item["sold"] += 1
-            
-            success_text = t["success"].format(item_name=item['name'], price=item['price'], balance=user['balance'])
-            markup = types.InlineKeyboardMarkup()
-            markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="browse_shop"))
-            bot.edit_message_text(success_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-        else:
-            shortage = item["price"] - user["balance"]
-            fail_text = t["insufficient"].format(price=item['price'], balance=user['balance'], shortage=shortage, address=DEPOSIT_ADDRESS)
-            markup = types.InlineKeyboardMarkup(row_width=1)
-            markup.add(
-                types.InlineKeyboardButton("✅ Submit TxID", callback_data="deposit_paid"),
-                types.InlineKeyboardButton(t["back_menu"], callback_data=f"item_{cat_key}_{prod_key}")
-            )
-            bot.edit_message_text(fail_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "add_funds" or call.data == "deposit_paid":
-        deposit_text = t["deposit_title"].format(address=DEPOSIT_ADDRESS)
-        markup = types.InlineKeyboardMarkup(row_width=1)
-        markup.add(
-            types.InlineKeyboardButton(t["paid_btn"], callback_data="tx_submitted"),
-            types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu")
-        )
-        bot.edit_message_text(deposit_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "tx_submitted":
-        bot.answer_callback_query(call.id, "Send your TxID in chat!", show_alert=True)
-        bot.send_message(call.message.chat.id, "✍️ Please send your Transaction Hash (TxID) in chat:")
-
-    elif call.data == "my_account":
-        account_text = t["account_title"].format(user_id=user_id, balance=user['balance'], orders=user['orders'])
-        markup = types.InlineKeyboardMarkup()
-        markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
-        bot.edit_message_text(account_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-    elif call.data == "main_menu":
-        welcome_text = t["welcome"].format(name=call.from_user.first_name, user_id=user_id, balance=user['balance'], orders=user['orders'])
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
-            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
-            types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
-            types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
-            types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
-            types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
-        )
-        bot.edit_message_text(welcome_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-if __name__ == "__main__":
-    inventory_thread = threading.Thread(target=multi_product_inventory_manager, daemon=True)
-    inventory_thread.start()
-    
-    bot.infinity_polling()
+        try:
+            bot.infinity_polling(timeout=60, long_polling_timeout=60)
+        except Exception as e:
+            time.sleep(3)
