@@ -9,8 +9,8 @@ from telebot import TeleBot, types
 BOT_TOKEN = "8888661139:AAFDzpjwmNDwcEe9-KNLC7hZnAnuZQd7DYQ"
 bot = TeleBot(BOT_TOKEN)
 
-# Admin Telegram ID
-ADMIN_ID = 888661139
+# Admin Telegram ID updated to your real ID
+ADMIN_ID = 8852375598
 
 # Your Real Crypto Addresses
 CRYPTO_WALLETS = {
@@ -180,8 +180,8 @@ def send_welcome(message):
             f"🚀 **New User Started Bot!**\n\n👤 **Name:** {name}\n🔗 **Username:** {username_str}\n🆔 **ID:** `{user_id}`", 
             parse_mode="Markdown"
         )
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Admin start notification error: {e}")
 
     text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
     markup = types.InlineKeyboardMarkup(row_width=2)
@@ -213,8 +213,8 @@ def handle_text(message):
             f"🔔 **New Payment Proof Submitted!**\n\n👤 **User:** {name}\n🔗 **Username:** {username_str}\n🆔 **ID:** `{user_id}`\n💳 **Details:** `{text}`", 
             parse_mode="Markdown"
         )
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Admin payment proof notification error: {e}")
 
 @bot.callback_query_handler(func=lambda call: True)
 def handle_callbacks(call):
@@ -294,7 +294,7 @@ def handle_callbacks(call):
                     parse_mode="Markdown"
                 )
             except Exception as e:
-                print(f"Admin notification error: {e}")
+                print(f"Admin order notification error: {e}")
         else:
             markup = types.InlineKeyboardMarkup(row_width=1)
             markup.add(
