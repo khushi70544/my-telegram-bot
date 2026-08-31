@@ -360,6 +360,12 @@ if __name__ == "__main__":
     sales_thread = threading.Thread(target=auto_hourly_sales, daemon=True)
     sales_thread.start()
     
+    # Clear any hanging webhooks to avoid 409 conflict errors
+    try:
+        bot.remove_webhook()
+    except Exception:
+        pass
+    
     while True:
         try:
             bot.infinity_polling(timeout=60, long_polling_timeout=60)
