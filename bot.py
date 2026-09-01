@@ -2,6 +2,7 @@ import os
 import random
 import time
 import threading
+import requests
 from flask import Flask
 from telebot import TeleBot, types
 
@@ -11,6 +12,9 @@ bot = TeleBot(BOT_TOKEN)
 
 # Admin Telegram ID
 ADMIN_ID = 8852375598
+
+# Your Render Web Service URL
+RENDER_URL = "https://my-telegram-bot-wnyy.onrender.com"
 
 # Crypto Wallets
 CRYPTO_WALLETS = {
@@ -70,6 +74,14 @@ def auto_stock_updater():
             bot.send_message(ADMIN_ID, msg, parse_mode="Markdown")
         except Exception as e:
             print(f"Stock updater error: {e}")
+
+def keep_alive():
+    while True:
+        time.sleep(300) # Har 5 minute mein ping karega taaki bot sleep na ho
+        try:
+            requests.get(RENDER_URL)
+        except Exception as e:
+            print(f"Keep-alive ping error: {e}")
 
 # Flask app for Render Web Service
 app = Flask(__name__)
@@ -303,7 +315,9 @@ if __name__ == "__main__":
     
     stock_thread = threading.Thread(target=auto_stock_updater, daemon=True)
     stock_thread.start()
+
+    ping_thread = threading.Thread(target=keep_alive, daemon=True)
+    ping_thread.start()
     
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
-            
