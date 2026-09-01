@@ -2,11 +2,11 @@ import os
 import random
 import time
 import threading
-from http.server import HTTPServer, BaseHTTPRequestHandler
+from flask import Flask
 from telebot import TeleBot, types
 
-# Bot Token
-BOT_TOKEN = "8888661139:AAFluKA60FPKddBVI1WlZskX3s2W5W6i-XU" # Apna token yahan dalein
+# Bot Token (Apna token yahan dalein)
+BOT_TOKEN = "8888661139:AAFluKA60FPKddBVI1WlZskX3s2W5W6i-XU" 
 bot = TeleBot(BOT_TOKEN)
 
 # Admin Telegram ID
@@ -57,60 +57,6 @@ lang_text = {
         "paid_btn": "✅ I HAVE PAID",
         "insufficient": "❌ **Insufficient Balance!**\n\nRequired: `${price:.2f}` | Balance: `${balance:.2f}`\n\n📍 **Choose top-up method:**",
         "success": "🎉 **Order Placed Successfully!**\n\n📦 **Item:** {item_name} (Qty: {qty})\n💸 **Total Deducted:** `${total_price:.2f}`\n💰 **New Balance:** `${balance:.2f}`\n\n⏳ Admin has been notified."
-    },
-    "zh": {
-        "welcome": "⚡ **欢迎来到 Xiao Elite Store, {name}!** ⚡\n\n👤 **账户 ID:** `{user_id}`\n💰 **余额:** `${balance:.2f}`\n🛒 **订单:** `{orders}`\n\n✨ 请在下方选择一个选项：",
-        "browse": "🤖 AI 服务",
-        "entertainment": "🎬 娱乐服务",
-        "topup": "💳 充值钱包",
-        "dashboard": "👤 我的面板",
-        "lang_btn": "🌐 语言: 中文",
-        "support": "📞 客服支持",
-        "catalog_title": "✨ **商店目录** ✨\n\n请选择分类：",
-        "back_menu": "🔙 主菜单",
-        "account_title": "👤 **面板:**\n\n🆔 ID: `{user_id}`\n💰 余额: `${balance:.2f}`\n🛒 订单: `{orders}`",
-        "deposit_title": "🪙 **选择支付网关:**\n\n请在下方选择您偏好的加密货币：",
-        "crypto_menu": "🪙 **选择加密货币:**\n\n请选择您要发送的加密货币：",
-        "crypto_text": "🪙 **通过 {coin_name} 支付:**\n\n📍 **地址:**\n`{address}`\n\n📌 请发送付款，然后点击 '✅ 我已付款' 或发送交易哈希 (TxID)。",
-        "paid_btn": "✅ 我已付款",
-        "insufficient": "❌ **余额不足！**\n\n需要: `${price:.2f}` | 余额: `${balance:.2f}`\n\n📍 **请选择充值方法：**",
-        "success": "🎉 **订单提交成功！**\n\n📦 **商品:** {item_name} (数量: {qty})\n💸 **总扣除:** `${total_price:.2f}`\n💰 **新余额:** `${balance:.2f}`\n\n⏳ 已通知管理员。"
-    },
-    "id": {
-        "welcome": "⚡ **Selamat datang di Xiao Elite Store, {name}!** ⚡\n\n👤 **ID Akun:** `{user_id}`\n💰 **Saldo:** `${balance:.2f}`\n🛒 **Pesanan:** `{orders}`\n\n✨ Pilih opsi di bawah ini:",
-        "browse": "🤖 Layanan AI",
-        "entertainment": "🎬 Hiburan",
-        "topup": "💳 Top-up Saldo",
-        "dashboard": "👤 Dashboard Saya",
-        "lang_btn": "🌐 Bahasa: Indonesia",
-        "support": "📞 Dukungan",
-        "catalog_title": "✨ **Katalog Toko** ✨\n\nPilih kategori:",
-        "back_menu": "🔙 Menu Utama",
-        "account_title": "👤 **Dashboard:**\n\n🆔 ID: `{user_id}`\n💰 Saldo: `${balance:.2f}`\n🛒 Pesanan: `{orders}`",
-        "deposit_title": "🪙 **Pilih Metode Pembayaran:**\n\nPilih mata uang kripto pilihan Anda di bawah ini:",
-        "crypto_menu": "🪙 **Pilih Mata Uang Kripto:**\n\nPilih kripto yang ingin Anda kirim:",
-        "crypto_text": "🪙 **Bayar via {coin_name}:**\n\n📍 **Alamat:**\n`{address}`\n\n📌 Kirim pembayaran, lalu klik '✅ Saya Sudah Bayar' atau kirim TxID Anda.",
-        "paid_btn": "✅ Saya Sudah Bayar",
-        "insufficient": "❌ **Saldo Tidak Cukup!**\n\nDibutuhkan: `${price:.2f}` | Saldo: `${balance:.2f}`\n\n📍 **Pilih metode top-up:**",
-        "success": "🎉 **Pesanan Berhasil Dibuat!**\n\n📦 **Item:** {item_name} (Jml: {qty})\n💸 **Total Terpotong:** `${total_price:.2f}`\n💰 **Saldo Baru:** `${balance:.2f}`\n\n⏳ Admin telah diberitahu."
-    },
-    "ru": {
-        "welcome": "⚡ **Добро пожаловать в Xiao Elite Store, {name}!** ⚡\n\n👤 **ID аккаунта:** `{user_id}`\n💰 **Баланс:** `${balance:.2f}`\n🛒 **Заказы:** `{orders}`\n\n✨ Выберите вариант ниже:",
-        "browse": "🤖 ИИ Сервисы",
-        "entertainment": "🎬 Развлечения",
-        "topup": "💳 Пополнить баланс",
-        "dashboard": "👤 Мой кабинет",
-        "lang_btn": "🌐 Язык: Русский",
-        "support": "📞 Поддержка",
-        "catalog_title": "✨ **Каталог товаров** ✨\n\nВыберите категорию:",
-        "back_menu": "🔙 Главное меню",
-        "account_title": "👤 **Кабинет:**\n\n🆔 ID: `{user_id}`\n💰 Баланс: `${balance:.2f}`\n🛒 Заказы: `{orders}`",
-        "deposit_title": "🪙 **Выберите способ оплаты:**\n\nВыберите криптовалюту ниже:",
-        "crypto_menu": "🪙 **Выберите криптовалюту:**\n\nВыберите нужную криптовалюту для отправки:",
-        "crypto_text": "🪙 **Оплата через {coin_name}:**\n\n📍 **Адрес:**\n`{address}`\n\n📌 Отправьте платеж, затем нажмите '✅ Я оплатил' или отправьте TxID.",
-        "paid_btn": "✅ Я оплатил",
-        "insufficient": "❌ **Недостаточно средств!**\n\nТребуется: `${price:.2f}` | Баланс: `${balance:.2f}`\n\n📍 **Выберите способ пополнения:**",
-        "success": "🎉 **Заказ успешно оформлен!**\n\n📦 **Товар:** {item_name} (Кол-во: {qty})\n💸 **Списано:** `${total_price:.2f}`\n💰 **Новый баланс:** `${balance:.2f}`\n\n⏳ Администратор уведомлен."
     }
 }
 
@@ -122,19 +68,16 @@ def get_user(user_id):
         user_data[user_id] = {"balance": 0.00, "orders": 0, "lang": "en"}
     return user_data[user_id]
 
-# Har 10 se 20 minute me stock kam/jyada karne wala function
 def auto_stock_updater():
     while True:
-        sleep_time = random.randint(600, 1200) # 10 to 20 minutes (in seconds)
+        sleep_time = random.randint(600, 1200)
         time.sleep(sleep_time)
         try:
             cat_key = random.choice(list(inventory.keys()))
             prod_key = random.choice(list(inventory[cat_key].keys()))
             item = inventory[cat_key][prod_key]
             
-            # Decide randomly whether to add stock (+2 to +4) or reduce (-1 to -2)
             action_type = random.choice(["add", "reduce"])
-            
             if action_type == "add":
                 added_qty = random.randint(2, 4)
                 item["stock"] += added_qty
@@ -145,28 +88,23 @@ def auto_stock_updater():
                     item["stock"] -= reduced_qty
                 msg = f"📉 **Stock Updated (Auto):**\n\n📦 Product: `{item['name']}`\n➖ Reduced: `-{reduced_qty}`\n📦 New Stock: `{item['stock']}`"
             
-            # Admin ko update bhejo
             bot.send_message(ADMIN_ID, msg, parse_mode="Markdown")
         except Exception as e:
             print(f"Stock updater error: {e}")
 
-class DummyHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.end_headers()
-        self.wfile.write(b"Bot is running successfully!")
+# Flask app for Render Web Service health check
+app = Flask(__name__)
 
-def run_server():
-    port = int(os.environ.get("PORT", 10000))
-    server = HTTPServer(('0.0.0.0', port), DummyHandler)
-    server.serve_forever()
+@app.route('/')
+def home():
+    return "Bot is running successfully!"
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     user_id = message.from_user.id
     name = message.from_user.first_name
     user = get_user(user_id)
-    t = lang_text[user["lang"]]
+    t = lang_text["en"]
 
     text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
     markup = types.InlineKeyboardMarkup(row_width=2)
@@ -175,7 +113,6 @@ def send_welcome(message):
         types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
         types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
         types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
-        types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
         types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
     )
     bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
@@ -191,7 +128,6 @@ def handle_text(message):
     if text.startswith('/'):
         return
 
-    # Admin reply to user after approval
     if user_id == ADMIN_ID and ADMIN_ID in admin_states and admin_states[ADMIN_ID].get("action") == "awaiting_reply_msg":
         target_user_id = admin_states[ADMIN_ID]["target_user"]
         try:
@@ -223,8 +159,7 @@ def handle_callbacks(call):
     user_id = call.from_user.id
     name = call.from_user.first_name
     user = get_user(user_id)
-    lang = user["lang"]
-    t = lang_text[lang]
+    t = lang_text["en"]
     
     bot.answer_callback_query(call.id)
     
@@ -240,7 +175,6 @@ def handle_callbacks(call):
                 bot.send_message(target_id, "🎉 **Your payment has been APPROVED by the Admin!**")
             except:
                 pass
-            
             admin_states[ADMIN_ID] = {"action": "awaiting_reply_msg", "target_user": target_id}
             bot.send_message(ADMIN_ID, f"✍️ Now send the message/product details you want to send to User `{target_id}`:")
         else:
@@ -249,28 +183,6 @@ def handle_callbacks(call):
                 bot.send_message(target_id, "❌ **Your payment verification was rejected by Admin.**")
             except:
                 pass
-        return
-
-    if call.data == "toggle_lang":
-        langs = ["en", "zh", "id", "ru"]
-        current_idx = langs.index(user["lang"]) if user["lang"] in langs else 0
-        user["lang"] = langs[(current_idx + 1) % len(langs)]
-        t = lang_text[user["lang"]]
-        
-        text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
-            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
-            types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
-            types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
-            types.InlineKeyboardButton(t["lang_btn"], callback_data="toggle_lang"),
-            types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
-        )
-        try:
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-        except:
-            pass
         return
         
     elif call.data == "cat_ai" or call.data == "cat_entertainment":
@@ -289,7 +201,6 @@ def handle_callbacks(call):
         
         text = f"📌 **{item['name']}**\n💵 Price per item: `${item['price']:.2f}`\n📦 Stock available: `{item['stock']}`\n\n🔢 **Select Quantity:**"
         markup = types.InlineKeyboardMarkup(row_width=5)
-        
         qty_buttons = []
         for q in range(1, 6):
             if item['stock'] >= q:
@@ -360,4 +271,49 @@ def handle_callbacks(call):
         for key, wallet in CRYPTO_WALLETS.items():
             markup.add(types.InlineKeyboardButton(wallet["name"], callback_data=f"crypto_pay_{key}"))
         markup.add(types.InlineKeyboardButton(t["back_menu"], callback_data="add_funds"))
-        bot.edit_message_text
+        bot.edit_message_text(t["crypto_menu"], chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mongo="Markdown")
+
+    elif call.data.startswith("crypto_pay_"):
+        coin_key = call.data.split("_")[2]
+        wallet = CRYPTO_WALLETS.get(coin_key)
+        if wallet:
+            text = t["crypto_text"].format(coin_name=wallet["name"], address=wallet["address"])
+            markup = types.InlineKeyboardMarkup(row_width=1)
+            markup.add(
+                types.InlineKeyboardButton(t["paid_btn"], callback_data="tx_submitted"),
+                types.InlineKeyboardButton(t["back_menu"], callback_data="crypto_menu")
+            )
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+
+    elif call.data == "tx_submitted":
+        bot.send_message(call.message.chat.id, "✍️ Please send your Transaction Reference / TxID or Screenshot details in chat:")
+
+    elif call.data == "my_account":
+        text = t["account_title"].format(user_id=user_id, balance=user['balance'], orders=user['orders'])
+        markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton(t["back_menu"], callback_data="main_menu"))
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+
+    elif call.data == "main_menu":
+        text = t["welcome"].format(name=name, user_id=user_id, balance=user['balance'], orders=user['orders'])
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        markup.add(
+            types.InlineKeyboardButton(t["browse"], callback_data="cat_ai"),
+            types.InlineKeyboardButton(t["entertainment"], callback_data="cat_entertainment"),
+            types.InlineKeyboardButton(t["topup"], callback_data="add_funds"),
+            types.InlineKeyboardButton(t["dashboard"], callback_data="my_account"),
+            types.InlineKeyboardButton(t["support"], url="https://t.me/ZhiGeAI")
+        )
+        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+
+if __name__ == "__main__":
+    # Start Telegram bot polling in a separate thread
+    bot_thread = threading.Thread(target=lambda: bot.infinity_polling(timeout=60, long_polling_timeout=60), daemon=True)
+    bot_thread.start()
+    
+    # Start automated stock updater thread
+    stock_thread = threading.Thread(target=auto_stock_updater, daemon=True)
+    stock_thread.start()
+    
+    # Run Flask web app so Render keeps the web service active
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
