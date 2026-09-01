@@ -25,26 +25,101 @@ CRYPTO_WALLETS = {
     "trx": {"name": "🔴 Tron (TRX)", "address": "THs69sCwiGDCDU1sWBA93tL2ct1ynQ6jyF"}
 }
 
-# Inventory with Updated Prices
+# Inventory with Updated Prices & Banner Images
 inventory = {
     "ai": {
-        "chatgpt_1m": {"name": "🤖 ChatGPT Plus 1 Month", "price": 3.40, "stock": random.randint(5, 10), "sold": random.randint(20, 35)},
-        "chatgpt_6m": {"name": "🤖 ChatGPT Plus 6 Month", "price": 13.90, "stock": random.randint(5, 10), "sold": random.randint(12, 28)},
-        "chatgpt_pro5": {"name": "⚡ ChatGPT Pro ×5", "price": 12.65, "stock": random.randint(5, 10), "sold": random.randint(3, 10)},
-        "chatgpt_pro20": {"name": "🚀 ChatGPT Pro ×20", "price": 30.80, "stock": random.randint(5, 10), "sold": random.randint(1, 5)},
-        "grok": {"name": "🧠 Grok AI Premium 1 Month", "price": 5.99, "stock": random.randint(5, 10), "sold": random.randint(8, 22)},
-        "deepseek": {"name": "🔬 DeepSeek Pro 1 Month", "price": 9.99, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "claude_max_5x": {"name": "🔥 Claude Max ×5", "price": 14.50, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "claude_max_20x": {"name": "🌟 Claude Max ×20", "price": 35.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)}
+        "chatgpt_1m": {
+            "name": "🤖 ChatGPT Plus 1 Month", 
+            "price": 3.40, 
+            "stock": random.randint(3, 7), 
+            "sold": random.randint(20, 35),
+            "image": "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=600"
+        },
+        "chatgpt_6m": {
+            "name": "🤖 ChatGPT Plus 6 Month", 
+            "price": 13.90, 
+            "stock": random.randint(2, 5), 
+            "sold": random.randint(12, 28),
+            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+        },
+        "chatgpt_pro5": {
+            "name": "⚡ ChatGPT Pro ×5", 
+            "price": 12.65, 
+            "stock": random.randint(2, 6), 
+            "sold": random.randint(3, 10),
+            "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600"
+        },
+        "chatgpt_pro20": {
+            "name": "🚀 ChatGPT Pro ×20", 
+            "price": 30.80, 
+            "stock": random.randint(1, 4), 
+            "sold": random.randint(1, 5),
+            "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600"
+        },
+        "grok": {
+            "name": "🧠 Grok AI Premium 1 Month", 
+            "price": 5.99, 
+            "stock": random.randint(3, 8), 
+            "sold": random.randint(8, 22),
+            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+        },
+        "deepseek": {
+            "name": "🔬 DeepSeek Pro 1 Month", 
+            "price": 9.99, 
+            "stock": random.randint(4, 9), 
+            "sold": random.randint(5, 15),
+            "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600"
+        },
+        "claude_max_5x": {
+            "name": "🔥 Claude Max ×5", 
+            "price": 14.50, 
+            "stock": random.randint(2, 5), 
+            "sold": random.randint(5, 15),
+            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+        },
+        "claude_max_20x": {
+            "name": "🌟 Claude Max ×20", 
+            "price": 35.00, 
+            "stock": random.randint(1, 3), 
+            "sold": random.randint(1, 8),
+            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+        }
     },
     "entertainment": {
-        "spotify": {"name": "🎧 Spotify Premium 1 Month", "price": 1.99, "stock": random.randint(5, 10), "sold": random.randint(35, 60)},
-        "netflix": {"name": "🍿 Netflix Premium 1 Month", "price": 3.49, "stock": random.randint(5, 10), "sold": random.randint(18, 42)}
+        "spotify": {
+            "name": "🎧 Spotify Premium 1 Month", 
+            "price": 1.99, 
+            "stock": random.randint(5, 12), 
+            "sold": random.randint(35, 60),
+            "image": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600"
+        },
+        "netflix": {
+            "name": "🍿 Netflix Premium 1 Month", 
+            "price": 3.49, 
+            "stock": random.randint(4, 10), 
+            "sold": random.randint(18, 42),
+            "image": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600"
+        }
     }
 }
 
 user_data = {}
 admin_states = {}
+
+# Global live recent sale ticker for social proof
+recent_sales_ticker = "🔥 **Live Feed:** `Rahul from Delhi` just purchased `ChatGPT Plus 1 Month`!"
+
+def fake_sales_ticker_updater():
+    global recent_sales_ticker
+    names = ["Rahul", "Aman", "Alex", "David", "Vikram", "John", "Sameer", "Chris", "Tanvir", "Michael"]
+    cities = ["Mumbai", "New York", "London", "Delhi", "Toronto", "Berlin", "Sydney", "Dubai", "Paris"]
+    products = ["ChatGPT Plus 1 Month", "ChatGPT Pro ×5", "Claude Max ×5", "Spotify Premium 1 Month", "Netflix Premium 1 Month"]
+    while True:
+        time.sleep(random.randint(40, 80))
+        n = random.choice(names)
+        c = random.choice(cities)
+        p = random.choice(products)
+        recent_sales_ticker = f"🔥 **Live Feed:** `{n} ({c})` just purchased `{p}`!"
 
 def get_user(user_id):
     if user_id not in user_data:
@@ -77,7 +152,7 @@ def auto_stock_updater():
 
 def keep_alive():
     while True:
-        time.sleep(300) # Har 5 minute mein ping karega taaki bot sleep na ho
+        time.sleep(300)
         try:
             requests.get(RENDER_URL)
         except Exception as e:
@@ -96,7 +171,7 @@ def send_welcome(message):
     name = message.from_user.first_name
     user = get_user(user_id)
 
-    text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OPTION BELOW:**"
+    text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n{recent_sales_ticker}\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OPTION BELOW:**"
     
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
@@ -182,7 +257,10 @@ def handle_callbacks(call):
             stock_label = f"🟢 IN STOCK ({item['stock']})" if item['stock'] > 0 else "🔴 SOLD OUT"
             markup.add(types.InlineKeyboardButton(f"{item['name']} | ${item['price']:.2f} [{stock_label}]", callback_data=f"item_{cat_key}_{key}"))
         markup.add(types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu"))
-        bot.edit_message_text("✨ **STORE CATALOG:**\n\n📌 **CHOOSE A CATEGORY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        try:
+            bot.edit_message_text(f"✨ **STORE CATALOG:**\n\n{recent_sales_ticker}\n\n📌 **CHOOSE A CATEGORY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        except:
+            bot.send_message(call.message.chat.id, f"✨ **STORE CATALOG:**\n\n{recent_sales_ticker}\n\n📌 **CHOOSE A CATEGORY BELOW:**", reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("item_"):
         parts = call.data.split("_")
@@ -191,7 +269,9 @@ def handle_callbacks(call):
         item = inventory[cat_key].get(prod_key)
         if not item: return
         
-        text = f"📌 **PRODUCT DETAILS:**\n\n🏷️ **NAME:** {item['name']}\n💵 **PRICE:** `${item['price']:.2f}`\n📦 **STOCK:** `{item['stock']}`\n\n🔢 **SELECT QUANTITY BELOW:**"
+        scarcity_tag = "⚠️ **HIGH DEMAND - SELLING FAST!**" if item['stock'] <= 3 else "🔥 **HOT DEAL - INSTANT DELIVERY**"
+        
+        text = f"📌 **PRODUCT DETAILS:**\n\n🏷️ **NAME:** {item['name']}\n💵 **PRICE:** `${item['price']:.2f}`\n📦 **STOCK:** `{item['stock']} available`\n🔥 **TOTAL SOLD:** `{item['sold']}+ units`\n\n{scarcity_tag}\n\n🔢 **SELECT QUANTITY BELOW:**"
         markup = types.InlineKeyboardMarkup(row_width=5)
         qty_buttons = []
         for q in range(1, 6):
@@ -199,7 +279,13 @@ def handle_callbacks(call):
                 qty_buttons.append(types.InlineKeyboardButton(str(q), callback_data=f"qty_{cat_key}_{prod_key}_{q}"))
         markup.add(*qty_buttons)
         markup.add(types.InlineKeyboardButton("🔙 BACK TO CATALOG", callback_data=f"cat_{cat_key}"))
-        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        
+        # Send Rich Media Banner with Photo instead of plain text message
+        try:
+            bot.delete_message(call.message.chat.id, call.message.message_id)
+        except:
+            pass
+        bot.send_photo(call.message.chat.id, item['image'], caption=text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("qty_"):
         parts = call.data.split("_")
@@ -212,14 +298,18 @@ def handle_callbacks(call):
         if not item: return
 
         total_price = item["price"] * qty
-        text = f"📌 **ORDER SUMMARY:**\n\n🏷️ **PRODUCT:** {item['name']}\n🔢 **QUANTITY:** `{qty}`\n💵 **TOTAL PRICE:** `${total_price:.2f}`\n📦 **AVAILABLE STOCK:** `{item['stock']}`"
+        text = f"📌 **ORDER SUMMARY:**\n\n🏷️ **PRODUCT:** {item['name']}\n🔢 **QUANTITY:** `{qty}`\n💵 **TOTAL PRICE:** `${total_price:.2f}`\n📦 **AVAILABLE STOCK:** `{item['stock']}`\n\n⚡ **CLICK CONFIRM BELOW TO LOCK IN THIS PRICE!**"
         
         markup = types.InlineKeyboardMarkup(row_width=1)
         if item['stock'] >= qty:
-            markup.add(types.InlineKeyboardButton(f"⚡ CONFIRM & BUY ({qty}x)", callback_data=f"buy_{cat_key}_{prod_key}_{qty}"))
+            markup.add(types.InlineKeyboardButton(f"⚡ CONFIRM & BUY ({qty}x) - ${total_price:.2f}", callback_data=f"buy_{cat_key}_{prod_key}_{qty}"))
         markup.add(types.InlineKeyboardButton("🪙 TOP-UP WALLET", callback_data="add_funds"))
         markup.add(types.InlineKeyboardButton("🔙 BACK TO PRODUCT", callback_data=f"item_{cat_key}_{prod_key}"))
-        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        
+        try:
+            bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+        except:
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("buy_"):
         parts = call.data.split("_")
@@ -239,9 +329,13 @@ def handle_callbacks(call):
             item["stock"] -= qty
             item["sold"] += qty
             
-            text = f"🎉 **ORDER PLACED SUCCESSFULLY!**\n\n📦 **ITEM:** {item['name']} (Qty: {qty})\n💸 **TOTAL DEDUCTED:** `${total_price:.2f}`\n💰 **NEW BALANCE:** `${user['balance']:.2f}`\n\n⏳ **ADMIN HAS BEEN NOTIFIED.**"
+            text = f"🎉 **ORDER PLACED SUCCESSFULLY!**\n\n📦 **ITEM:** {item['name']} (Qty: {qty})\n💸 **TOTAL DEDUCTED:** `${total_price:.2f}`\n💰 **NEW BALANCE:** `${user['balance']:.2f}`\n\n⏳ **ADMIN HAS BEEN NOTIFIED FOR INSTANT DISPATCH.**"
             markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu"))
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            
+            try:
+                bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+            except:
+                bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
             
             try:
                 username = call.from_user.username
@@ -260,7 +354,10 @@ def handle_callbacks(call):
                 types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu")
             )
             text = f"❌ **INSUFFICIENT WALLET BALANCE!**\n\n💵 **REQUIRED:** `${total_price:.2f}` | 💰 **YOUR BALANCE:** `${user['balance']:.2f}`\n\n📍 **CHOOSE TOP-UP METHOD BELOW:**"
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            try:
+                bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+            except:
+                bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "add_funds":
         markup = types.InlineKeyboardMarkup(row_width=1)
@@ -268,7 +365,10 @@ def handle_callbacks(call):
             types.InlineKeyboardButton("🪙 CRYPTO CURRENCIES", callback_data="crypto_menu"),
             types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu")
         )
-        bot.edit_message_text("💳 **SELECT PAYMENT GATEWAY:**\n\n📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        try:
+            bot.edit_message_text("💳 **SELECT PAYMENT GATEWAY:**\n\n📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        except:
+            bot.send_message(call.message.chat.id, "💳 **SELECT PAYMENT GATEWAY:**\n\n📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**", reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "crypto_menu":
         markup = types.InlineKeyboardMarkup(row_width=1)
@@ -295,29 +395,10 @@ def handle_callbacks(call):
     elif call.data == "my_account":
         text = f"👤 **USER DASHBOARD:**\n\n🆔 **ID:** `{user_id}`\n💰 **BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`"
         markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu"))
-        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        try:
+            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        except:
+            bot.send_message(call.message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "main_menu":
-        text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OPTION BELOW:**"
-        markup = types.InlineKeyboardMarkup(row_width=2)
-        markup.add(
-            types.InlineKeyboardButton("🤖 AI SERVICES", callback_data="cat_ai"),
-            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_data="cat_entertainment"),
-            types.InlineKeyboardButton("💳 TOP-UP WALLET", callback_data="add_funds"),
-            types.InlineKeyboardButton("👤 MY DASHBOARD", callback_data="my_account"),
-            types.InlineKeyboardButton("📞 SUPPORT", url="https://t.me/ZhiGeAI")
-        )
-        bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
-
-if __name__ == "__main__":
-    bot_thread = threading.Thread(target=lambda: bot.infinity_polling(timeout=60, long_polling_timeout=60), daemon=True)
-    bot_thread.start()
-    
-    stock_thread = threading.Thread(target=auto_stock_updater, daemon=True)
-    stock_thread.start()
-
-    ping_thread = threading.Thread(target=keep_alive, daemon=True)
-    ping_thread.start()
-    
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
+        text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n{recent_sales_ticker}\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OP
