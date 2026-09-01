@@ -6,7 +6,7 @@ import requests
 from flask import Flask
 from telebot import TeleBot, types
 
-# Bot Token
+# Bot Token Updated
 BOT_TOKEN = "8888661139:AAFluKA60FPKddBVI1WlZskX3s2W5W6i-XU" 
 bot = TeleBot(BOT_TOKEN)
 
@@ -460,4 +460,4 @@ def handle_callbacks(call):
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton("🤖 AI SERVICES", callback_data="cat_ai"),
-            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_data="cat_enter
+            types.InlineKeyboardButton("🎬 ENTERTAINMENT", 
