@@ -365,7 +365,8 @@ def handle_callbacks(call):
 
 ⏳ **ADMIN HAS BEEN NOTIFIED FOR INSTANT DISPATCH.**"""
 
-            markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu"))
+            markup = types.InlineKeyboardMarkup()
+            markup.add(types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu"))
             
             try:
                 bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
@@ -441,7 +442,8 @@ def handle_callbacks(call):
 
     elif call.data == "my_account":
         text = f"👤 **USER DASHBOARD:**\n\n🆔 **ID:** `{user_id}`\n💰 **BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`"
-        markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu"))
+        markup = types.InlineKeyboardMarkup()
+        markup.add(types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu"))
         try:
             bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
         except:
@@ -460,5 +462,4 @@ def handle_callbacks(call):
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton("🤖 AI SERVICES", callback_data="cat_ai"),
-            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_data="cat_entertainment"),
-        
+            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_d
