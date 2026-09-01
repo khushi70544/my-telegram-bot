@@ -6,7 +6,7 @@ import requests
 from flask import Flask
 from telebot import TeleBot, types
 
-# Bot Token Updated
+# Bot Token
 BOT_TOKEN = "8888661139:AAFluKA60FPKddBVI1WlZskX3s2W5W6i-XU" 
 bot = TeleBot(BOT_TOKEN)
 
@@ -25,7 +25,7 @@ CRYPTO_WALLETS = {
     "trx": {"name": "🔴 Tron (TRX)", "address": "THs69sCwiGDCDU1sWBA93tL2ct1ynQ6jyF"}
 }
 
-# Inventory with Updated Prices & Banner Images
+# Inventory
 inventory = {
     "ai": {
         "chatgpt_1m": {
@@ -460,4 +460,5 @@ def handle_callbacks(call):
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
             types.InlineKeyboardButton("🤖 AI SERVICES", callback_data="cat_ai"),
-            types.InlineKeyboardButton("🎬 ENTERTAINMENT", 
+            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_data="cat_entertainment"),
+        
