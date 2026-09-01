@@ -106,7 +106,6 @@ inventory = {
 user_data = {}
 admin_states = {}
 
-# Global live recent sale ticker for social proof
 recent_sales_ticker = "🔥 **Live Feed:** `Rahul from Delhi` just purchased `ChatGPT Plus 1 Month`!"
 
 def fake_sales_ticker_updater():
@@ -158,7 +157,6 @@ def keep_alive():
         except Exception as e:
             print(f"Keep-alive ping error: {e}")
 
-# Flask app for Render Web Service
 app = Flask(__name__)
 
 @app.route('/')
@@ -171,7 +169,15 @@ def send_welcome(message):
     name = message.from_user.first_name
     user = get_user(user_id)
 
-    text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n{recent_sales_ticker}\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OPTION BELOW:**"
+    text = f"""⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡
+
+{recent_sales_ticker}
+
+👤 **ACCOUNT ID:** `{user_id}`
+💰 **WALLET BALANCE:** `${user['balance']:.2f}`
+🛒 **TOTAL ORDERS:** `{user['orders']}`
+
+✨ **PLEASE SELECT AN OPTION BELOW:**"""
     
     markup = types.InlineKeyboardMarkup(row_width=2)
     markup.add(
@@ -257,10 +263,16 @@ def handle_callbacks(call):
             stock_label = f"🟢 IN STOCK ({item['stock']})" if item['stock'] > 0 else "🔴 SOLD OUT"
             markup.add(types.InlineKeyboardButton(f"{item['name']} | ${item['price']:.2f} [{stock_label}]", callback_data=f"item_{cat_key}_{key}"))
         markup.add(types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu"))
+        
+        cat_text = f"""✨ **STORE CATALOG:**
+
+{recent_sales_ticker}
+
+📌 **CHOOSE A CATEGORY BELOW:**"""
         try:
-            bot.edit_message_text(f"✨ **STORE CATALOG:**\n\n{recent_sales_ticker}\n\n📌 **CHOOSE A CATEGORY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_text(cat_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.send_message(call.message.chat.id, f"✨ **STORE CATALOG:**\n\n{recent_sales_ticker}\n\n📌 **CHOOSE A CATEGORY BELOW:**", reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(call.message.chat.id, cat_text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("item_"):
         parts = call.data.split("_")
@@ -271,7 +283,17 @@ def handle_callbacks(call):
         
         scarcity_tag = "⚠️ **HIGH DEMAND - SELLING FAST!**" if item['stock'] <= 3 else "🔥 **HOT DEAL - INSTANT DELIVERY**"
         
-        text = f"📌 **PRODUCT DETAILS:**\n\n🏷️ **NAME:** {item['name']}\n💵 **PRICE:** `${item['price']:.2f}`\n📦 **STOCK:** `{item['stock']} available`\n🔥 **TOTAL SOLD:** `{item['sold']}+ units`\n\n{scarcity_tag}\n\n🔢 **SELECT QUANTITY BELOW:**"
+        text = f"""📌 **PRODUCT DETAILS:**
+
+🏷️ **NAME:** {item['name']}
+💵 **PRICE:** `${item['price']:.2f}`
+📦 **STOCK:** `{item['stock']} available`
+🔥 **TOTAL SOLD:** `{item['sold']}+ units`
+
+{scarcity_tag}
+
+🔢 **SELECT QUANTITY BELOW:**"""
+
         markup = types.InlineKeyboardMarkup(row_width=5)
         qty_buttons = []
         for q in range(1, 6):
@@ -280,7 +302,6 @@ def handle_callbacks(call):
         markup.add(*qty_buttons)
         markup.add(types.InlineKeyboardButton("🔙 BACK TO CATALOG", callback_data=f"cat_{cat_key}"))
         
-        # Send Rich Media Banner with Photo instead of plain text message
         try:
             bot.delete_message(call.message.chat.id, call.message.message_id)
         except:
@@ -298,7 +319,14 @@ def handle_callbacks(call):
         if not item: return
 
         total_price = item["price"] * qty
-        text = f"📌 **ORDER SUMMARY:**\n\n🏷️ **PRODUCT:** {item['name']}\n🔢 **QUANTITY:** `{qty}`\n💵 **TOTAL PRICE:** `${total_price:.2f}`\n📦 **AVAILABLE STOCK:** `{item['stock']}`\n\n⚡ **CLICK CONFIRM BELOW TO LOCK IN THIS PRICE!**"
+        text = f"""📌 **ORDER SUMMARY:**
+
+🏷️ **PRODUCT:** {item['name']}
+🔢 **QUANTITY:** `{qty}`
+💵 **TOTAL PRICE:** `${total_price:.2f}`
+📦 **AVAILABLE STOCK:** `{item['stock']}`
+
+⚡ **CLICK CONFIRM BELOW TO LOCK IN THIS PRICE!**"""
         
         markup = types.InlineKeyboardMarkup(row_width=1)
         if item['stock'] >= qty:
@@ -329,7 +357,14 @@ def handle_callbacks(call):
             item["stock"] -= qty
             item["sold"] += qty
             
-            text = f"🎉 **ORDER PLACED SUCCESSFULLY!**\n\n📦 **ITEM:** {item['name']} (Qty: {qty})\n💸 **TOTAL DEDUCTED:** `${total_price:.2f}`\n💰 **NEW BALANCE:** `${user['balance']:.2f}`\n\n⏳ **ADMIN HAS BEEN NOTIFIED FOR INSTANT DISPATCH.**"
+            text = f"""🎉 **ORDER PLACED SUCCESSFULLY!**
+
+📦 **ITEM:** {item['name']} (Qty: {qty})
+💸 **TOTAL DEDUCTED:** `${total_price:.2f}`
+💰 **NEW BALANCE:** `${user['balance']:.2f}`
+
+⏳ **ADMIN HAS BEEN NOTIFIED FOR INSTANT DISPATCH.**"""
+
             markup = types.InlineKeyboardMarkup().add(types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu"))
             
             try:
@@ -353,7 +388,11 @@ def handle_callbacks(call):
                 types.InlineKeyboardButton("🪙 PAY VIA CRYPTO", callback_data="crypto_menu"),
                 types.InlineKeyboardButton("🏠 BACK TO MAIN MENU", callback_data="main_menu")
             )
-            text = f"❌ **INSUFFICIENT WALLET BALANCE!**\n\n💵 **REQUIRED:** `${total_price:.2f}` | 💰 **YOUR BALANCE:** `${user['balance']:.2f}`\n\n📍 **CHOOSE TOP-UP METHOD BELOW:**"
+            text = f"""❌ **INSUFFICIENT WALLET BALANCE!**
+
+💵 **REQUIRED:** `${total_price:.2f}` | 💰 **YOUR BALANCE:** `${user['balance']:.2f}`
+
+📍 **CHOOSE TOP-UP METHOD BELOW:**"""
             try:
                 bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
             except:
@@ -365,10 +404,13 @@ def handle_callbacks(call):
             types.InlineKeyboardButton("🪙 CRYPTO CURRENCIES", callback_data="crypto_menu"),
             types.InlineKeyboardButton("🔙 BACK TO MAIN MENU", callback_data="main_menu")
         )
+        funds_text = """💳 **SELECT PAYMENT GATEWAY:**
+
+📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**"""
         try:
-            bot.edit_message_text("💳 **SELECT PAYMENT GATEWAY:**\n\n📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_text(funds_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.send_message(call.message.chat.id, "💳 **SELECT PAYMENT GATEWAY:**\n\n📌 **CHOOSE YOUR PREFERRED CRYPTO CURRENCY BELOW:**", reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(call.message.chat.id, funds_text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "crypto_menu":
         markup = types.InlineKeyboardMarkup(row_width=1)
@@ -381,7 +423,12 @@ def handle_callbacks(call):
         coin_key = call.data.split("_")[2]
         wallet = CRYPTO_WALLETS.get(coin_key)
         if wallet:
-            text = f"🪙 **PAY VIA {wallet['name']}:**\n\n📍 **DEPOSIT ADDRESS:**\n`{wallet['address']}`\n\n📌 **SEND PAYMENT, THEN CLICK 'I HAVE PAID' OR TYPE YOUR TXID.**"
+            text = f"""🪙 **PAY VIA {wallet['name']}:**
+
+📍 **DEPOSIT ADDRESS:**
+`{wallet['address']}`
+
+📌 **SEND PAYMENT, THEN CLICK 'I HAVE PAID' OR TYPE YOUR TXID.**"""
             markup = types.InlineKeyboardMarkup(row_width=1)
             markup.add(
                 types.InlineKeyboardButton("✅ I HAVE PAID (SEND TXID)", callback_data="tx_submitted"),
@@ -401,4 +448,16 @@ def handle_callbacks(call):
             bot.send_message(call.message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "main_menu":
-        text = f"⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡\n\n{recent_sales_ticker}\n\n👤 **ACCOUNT ID:** `{user_id}`\n💰 **WALLET BALANCE:** `${user['balance']:.2f}`\n🛒 **TOTAL ORDERS:** `{user['orders']}`\n\n✨ **PLEASE SELECT AN OP
+        text = f"""⚡ **WELCOME TO XIAO ELITE STORE, {name.upper()}!** ⚡
+
+{recent_sales_ticker}
+
+👤 **ACCOUNT ID:** `{user_id}`
+💰 **WALLET BALANCE:** `${user['balance']:.2f}`
+🛒 **TOTAL ORDERS:** `{user['orders']}`
+
+✨ **PLEASE SELECT AN OPTION BELOW:**"""
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        markup.add(
+            types.InlineKeyboardButton("🤖 AI SERVICES", callback_data="cat_ai"),
+            types.InlineKeyboardButton("🎬 ENTERTAINMENT", callback_data="cat_enter
