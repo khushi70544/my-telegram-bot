@@ -26,56 +26,56 @@ inventory = {
             "price": 3.40, 
             "stock": random.randint(3, 7), 
             "sold": random.randint(20, 35),
-            "image": "https://images.unsplash.com/photo-1677442136019-21780efad99a?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo_%282023%29.svg"
         },
         "chatgpt_6m": {
             "name": "🤖 ChatGPT Plus 6 Month", 
             "price": 13.90, 
             "stock": random.randint(2, 5), 
             "sold": random.randint(12, 28),
-            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo_%282023%29.svg"
         },
         "chatgpt_pro5": {
             "name": "⚡ ChatGPT Pro ×5 Accounts", 
             "price": 12.65, 
             "stock": random.randint(2, 6), 
             "sold": random.randint(3, 10),
-            "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo_%282023%29.svg"
         },
         "chatgpt_pro20": {
             "name": "🚀 ChatGPT Pro ×20 Accounts", 
             "price": 30.80, 
             "stock": random.randint(1, 4), 
             "sold": random.randint(1, 5),
-            "image": "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo_%282023%29.svg"
         },
         "grok": {
             "name": "🧠 Grok AI Premium 1 Month", 
             "price": 5.99, 
             "stock": random.randint(3, 8), 
             "sold": random.randint(8, 22),
-            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+            "image": "https://pbs.twimg.com/profile_images/1813959929828552704/81d45s8o_400x400.jpg"
         },
         "deepseek": {
             "name": "🔬 DeepSeek Pro 1 Month", 
             "price": 9.99, 
             "stock": random.randint(4, 9), 
             "sold": random.randint(5, 15),
-            "image": "https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=600"
+            "image": "https://images.seeklogo.com/logo-png/52/2/deepseek-logo-png_seeklogo-526978.png"
         },
         "claude_max_5x": {
             "name": "🔥 Claude Max ×5 Accounts", 
             "price": 14.50, 
             "stock": random.randint(2, 5), 
             "sold": random.randint(5, 15),
-            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+            "image": "https://anthropic.com/images/icons/apple-touch-icon.png"
         },
         "claude_max_20x": {
             "name": "🌟 Claude Max ×20 Accounts", 
             "price": 35.00, 
             "stock": random.randint(1, 3), 
             "sold": random.randint(1, 8),
-            "image": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600"
+            "image": "https://anthropic.com/images/icons/apple-touch-icon.png"
         }
     },
     "entertainment": {
@@ -84,14 +84,14 @@ inventory = {
             "price": 1.99, 
             "stock": random.randint(5, 12), 
             "sold": random.randint(35, 60),
-            "image": "https://images.unsplash.com/photo-1614680376593-902f749f7ffc?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg"
         },
         "netflix": {
             "name": "🍿 Netflix Premium 1 Month", 
             "price": 3.49, 
             "stock": random.randint(4, 10), 
             "sold": random.randint(18, 42),
-            "image": "https://images.unsplash.com/photo-1574375927938-d5a98e8ffe85?w=600"
+            "image": "https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg"
         }
     }
 }
@@ -200,7 +200,13 @@ def handle_callbacks(call):
     name = call.from_user.first_name
     user = get_user(user_id)
     
-    bot.answer_callback_query(call.id)
+    try:
+        bot.answer_callback_query(call.id)
+    except:
+        pass
+    
+    chat_id = call.message.chat.id
+    message_id = call.message.message_id
     
     if call.data.startswith("approve_") or call.data.startswith("reject_"):
         if user_id != ADMIN_ID:
@@ -209,7 +215,10 @@ def handle_callbacks(call):
         target_id = int(target_id)
         
         if action == "approve":
-            bot.edit_message_text(f"{call.message.text}\n\n✅ **STATUS: APPROVED**", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown")
+            try:
+                bot.edit_message_text(f"{call.message.text}\n\n✅ **STATUS: APPROVED**", chat_id=chat_id, message_id=message_id, parse_mode="Markdown")
+            except:
+                bot.send_message(chat_id, "✅ **STATUS: APPROVED**")
             try:
                 bot.send_message(target_id, "🎉 Your payment has been approved by the admin!")
             except:
@@ -217,7 +226,10 @@ def handle_callbacks(call):
             admin_states[ADMIN_ID] = {"action": "awaiting_reply_msg", "target_user": target_id}
             bot.send_message(ADMIN_ID, f"✍️ Now send the product details or message for user `{target_id}`:")
         else:
-            bot.edit_message_text(f"{call.message.text}\n\n❌ **STATUS: REJECTED**", chat_id=call.message.chat.id, message_id=call.message.message_id, parse_mode="Markdown")
+            try:
+                bot.edit_message_text(f"{call.message.text}\n\n❌ **STATUS: REJECTED**", chat_id=chat_id, message_id=message_id, parse_mode="Markdown")
+            except:
+                bot.send_message(chat_id, "❌ **STATUS: REJECTED**")
             try:
                 bot.send_message(target_id, "❌ Your payment verification was rejected.")
             except:
@@ -234,9 +246,9 @@ def handle_callbacks(call):
         
         cat_text = f"📌 **SELECT A PRODUCT FROM {cat_key.upper()} CATEGORY:**"
         try:
-            bot.edit_message_text(cat_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_text(cat_text, chat_id=chat_id, message_id=message_id, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.send_message(call.message.chat.id, cat_text, reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(chat_id, cat_text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("item_"):
         parts = call.data.split("_")
@@ -263,10 +275,13 @@ Select quantity below:"""
         markup.add(types.InlineKeyboardButton("🔙 BACK TO CATALOG", callback_data=f"cat_{cat_key}"))
         
         try:
-            bot.delete_message(call.message.chat.id, call.message.message_id)
+            bot.delete_message(chat_id, message_id)
         except:
             pass
-        bot.send_photo(call.message.chat.id, item['image'], caption=text, reply_markup=markup, parse_mode="Markdown")
+        try:
+            bot.send_photo(chat_id, item['image'], caption=text, reply_markup=markup, parse_mode="Markdown")
+        except Exception:
+            bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("qty_"):
         parts = call.data.split("_")
@@ -294,9 +309,9 @@ Click confirm to proceed:"""
         markup.add(types.InlineKeyboardButton("🔙 BACK", callback_data=f"item_{cat_key}_{prod_key}"))
         
         try:
-            bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_caption(chat_id=chat_id, message_id=message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("buy_"):
         parts = call.data.split("_")
@@ -328,9 +343,9 @@ Admin notified for instant delivery."""
             markup.add(types.InlineKeyboardButton("🏠 MAIN MENU", callback_data="main_menu"))
             
             try:
-                bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+                bot.edit_message_caption(chat_id=chat_id, message_id=message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
             except:
-                bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+                bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
             
             try:
                 username = call.from_user.username
@@ -352,9 +367,9 @@ Admin notified for instant delivery."""
 
 💵 **Required:** `${total_price:.2f}` | 💰 **Your Balance:** `${user['balance']:.2f}`"""
             try:
-                bot.edit_message_caption(chat_id=call.message.chat.id, message_id=call.message.message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
+                bot.edit_message_caption(chat_id=chat_id, message_id=message_id, caption=text, reply_markup=markup, parse_mode="Markdown")
             except:
-                bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+                bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "add_funds":
         markup = types.InlineKeyboardMarkup(row_width=1)
@@ -364,16 +379,19 @@ Admin notified for instant delivery."""
         )
         funds_text = "💳 **SELECT PAYMENT METHOD:**\n\nChoose your crypto currency to fund your wallet:"
         try:
-            bot.edit_message_text(funds_text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_text(funds_text, chat_id=chat_id, message_id=message_id, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.send_message(call.message.chat.id, funds_text, reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(chat_id, funds_text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "crypto_menu":
         markup = types.InlineKeyboardMarkup(row_width=1)
         for key, wallet in CRYPTO_WALLETS.items():
             markup.add(types.InlineKeyboardButton(wallet["name"], callback_data=f"crypto_pay_{key}"))
-        markup.add(types.InlineKeyboardButton("🔙 BACK", callback_data="add_funds"))
-        bot.edit_message_text("🪙 **SELECT CRYPTO:**", chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+        markup.add(types.InlineKeyboardButton("🔙 MAIN MENU", callback_data="main_menu"))
+        try:
+            bot.edit_message_text("🪙 **SELECT CRYPTO:**", chat_id=chat_id, message_id=message_id, reply_markup=markup, parse_mode="Markdown")
+        except:
+            bot.send_message(chat_id, "🪙 **SELECT CRYPTO:**", reply_markup=markup, parse_mode="Markdown")
 
     elif call.data.startswith("crypto_pay_"):
         coin_key = call.data.split("_")[2]
@@ -390,19 +408,22 @@ Send payment and click below to send your TXID."""
                 types.InlineKeyboardButton("✅ I HAVE PAID (SEND TXID)", callback_data="tx_submitted"),
                 types.InlineKeyboardButton("🔙 BACK", callback_data="crypto_menu")
             )
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            try:
+                bot.edit_message_text(text, chat_id=chat_id, message_id=message_id, reply_markup=markup, parse_mode="Markdown")
+            except:
+                bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "tx_submitted":
-        bot.send_message(call.message.chat.id, "✍️ Please send your transaction reference / TXID or screenshot details in the chat:", parse_mode="Markdown")
+        bot.send_message(chat_id, "✍️ Please send your transaction reference / TXID or screenshot details in the chat:", parse_mode="Markdown")
 
     elif call.data == "my_account":
         text = f"👤 **USER DASHBOARD:**\n\n🆔 ID: `{user_id}`\n💰 Balance: `${user['balance']:.2f}`\n🛒 Total Orders: `{user['orders']}`\n\n{recent_sales_ticker}"
         markup = types.InlineKeyboardMarkup()
         markup.add(types.InlineKeyboardButton("🔙 MAIN MENU", callback_data="main_menu"))
         try:
-            bot.edit_message_text(text, chat_id=call.message.chat.id, message_id=call.message.message_id, reply_markup=markup, parse_mode="Markdown")
+            bot.edit_message_text(text, chat_id=chat_id, message_id=message_id, reply_markup=markup, parse_mode="Markdown")
         except:
-            bot.send_message(call.message.chat.id, text, reply_markup=markup, parse_mode="Markdown")
+            bot.send_message(chat_id, text, reply_markup=markup, parse_mode="Markdown")
 
     elif call.data == "main_menu":
         text = f"""⚡ **XIAO ELITE STORE** ⚡
@@ -415,10 +436,10 @@ Welcome, **{name}**! Get premium accounts instantly with automated delivery.
 
 ✨ **Select a category below to browse products:**"""
         try:
-            bot.delete_message(call.message.chat.id, call.message.message_id)
+            bot.delete_message(chat_id, message_id)
         except:
             pass
-        bot.send_message(call.message.chat.id, text, reply_markup=get_main_menu(), parse_mode="Markdown")
+        bot.send_message(chat_id, text, reply_markup=get_main_menu(), parse_mode="Markdown")
 
 if __name__ == "__main__":
     threading.Thread(target=lambda: bot.infinity_polling(timeout=60, long_polling_timeout=60), daemon=True).start()
