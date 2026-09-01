@@ -21,21 +21,21 @@ CRYPTO_WALLETS = {
     "trx": {"name": "🔴 Tron (TRX)", "address": "THs69sCwiGDCDU1sWBA93tL2ct1ynQ6jyF"}
 }
 
-# Inventory
+# Inventory with Updated Prices
 inventory = {
     "ai": {
-        "chatgpt_1m": {"name": "🤖 ChatGPT Plus 1 Month", "price": 3.00, "stock": random.randint(5, 10), "sold": random.randint(20, 35)},
-        "chatgpt_6m": {"name": "🤖 ChatGPT Plus 6 Month", "price": 5.50, "stock": random.randint(5, 10), "sold": random.randint(12, 28)},
-        "chatgpt_pro5": {"name": "⚡ ChatGPT Pro ×5", "price": 30.00, "stock": random.randint(5, 10), "sold": random.randint(3, 10)},
-        "chatgpt_pro20": {"name": "🚀 ChatGPT Pro ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 5)},
-        "grok": {"name": "🧠 Grok AI Premium 1 Month", "price": 4.85, "stock": random.randint(5, 10), "sold": random.randint(8, 22)},
-        "deepseek": {"name": "🔬 DeepSeek Pro 1 Month", "price": 12.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "claude_max_5x": {"name": "🔥 Claude Max ×5", "price": 15.00, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
-        "claude_max_20x": {"name": "🌟 Claude Max ×20", "price": 70.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)}
+        "chatgpt_1m": {"name": "🤖 ChatGPT Plus 1 Month", "price": 3.40, "stock": random.randint(5, 10), "sold": random.randint(20, 35)},
+        "chatgpt_6m": {"name": "🤖 ChatGPT Plus 6 Month", "price": 13.90, "stock": random.randint(5, 10), "sold": random.randint(12, 28)},
+        "chatgpt_pro5": {"name": "⚡ ChatGPT Pro ×5", "price": 12.65, "stock": random.randint(5, 10), "sold": random.randint(3, 10)},
+        "chatgpt_pro20": {"name": "🚀 ChatGPT Pro ×20", "price": 30.80, "stock": random.randint(5, 10), "sold": random.randint(1, 5)},
+        "grok": {"name": "🧠 Grok AI Premium 1 Month", "price": 5.99, "stock": random.randint(5, 10), "sold": random.randint(8, 22)},
+        "deepseek": {"name": "🔬 DeepSeek Pro 1 Month", "price": 9.99, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
+        "claude_max_5x": {"name": "🔥 Claude Max ×5", "price": 14.50, "stock": random.randint(5, 10), "sold": random.randint(5, 15)},
+        "claude_max_20x": {"name": "🌟 Claude Max ×20", "price": 35.00, "stock": random.randint(5, 10), "sold": random.randint(1, 8)}
     },
     "entertainment": {
-        "spotify": {"name": "🎧 Spotify Premium 1 Month", "price": 0.50, "stock": random.randint(5, 10), "sold": random.randint(35, 60)},
-        "netflix": {"name": "🍿 Netflix Premium 1 Month", "price": 0.80, "stock": random.randint(5, 10), "sold": random.randint(18, 42)}
+        "spotify": {"name": "🎧 Spotify Premium 1 Month", "price": 1.99, "stock": random.randint(5, 10), "sold": random.randint(35, 60)},
+        "netflix": {"name": "🍿 Netflix Premium 1 Month", "price": 3.49, "stock": random.randint(5, 10), "sold": random.randint(18, 42)}
     }
 }
 
@@ -306,3 +306,4 @@ if __name__ == "__main__":
     
     port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
+            
